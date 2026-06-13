@@ -1,0 +1,290 @@
+vocabulary:
+  - term: transactionId
+    label: Transaction ID
+    description: >-
+      A unique identifier assigned to each identity verification transaction by
+      the ID Analyzer platform. Used to retrieve, update, or delete a specific
+      scan or verification record from the transaction vault.
+    type: string
+    context: scanner, biometric, docupass, transaction
+
+  - term: decision
+    label: KYC Decision
+    description: >-
+      The final outcome of an identity verification transaction based on the
+      configured KYC profile thresholds and validation rules.
+    type: string
+    enum: [accept, review, reject]
+    context: scanner, biometric
+
+  - term: profile
+    label: KYC Profile
+    description: >-
+      A named configuration that defines how identity documents are processed,
+      validated, and scored. Profiles can use preset security levels
+      (security_none, security_low, security_medium, security_high) or custom
+      profile IDs created via the Profile API.
+    type: string
+    context: scanner, biometric, docupass
+
+  - term: profileOverride
+    label: Profile Override
+    description: >-
+      A set of per-request configuration parameters that are merged on top of
+      the base KYC profile settings for a single API call, without modifying
+      the stored profile.
+    type: object
+    context: scanner, biometric
+
+  - term: document
+    label: Document Image
+    description: >-
+      The front-side image of an identity document (passport, driver license,
+      or national ID card). Accepted as a URL, base64-encoded string, local
+      file path, or 24-hour cache reference prefixed with "ref:".
+    type: string
+    context: scanner
+
+  - term: documentBack
+    label: Document Back Image
+    description: >-
+      The back-side image of an identity document. Required for driver licenses
+      and national IDs that carry data on the reverse side, including
+      AAMVA PDF417 barcodes on US/CA licenses.
+    type: string
+    context: scanner
+
+  - term: face
+    label: Face Photo
+    description: >-
+      A selfie or portrait photograph of the identity verification subject used
+      for biometric 1:1 face matching against the document photo and/or passive
+      liveness detection.
+    type: string
+    context: scanner, biometric
+
+  - term: faceVideo
+    label: Face Video
+    description: >-
+      A short video clip of the identity verification subject used for enhanced
+      liveness detection. Preferred over a static face photo when deepfake or
+      presentation-attack resistance is required.
+    type: string
+    context: scanner, biometric
+
+  - term: reference
+    label: Reference Face Image
+    description: >-
+      The trusted reference face image used as the ground-truth for 1:1 face
+      comparison in the Biometric API. Typically the face photo extracted from
+      the identity document.
+    type: string
+    context: biometric
+
+  - term: customData
+    label: Custom Data
+    description: >-
+      An arbitrary string (up to 1 KB) stored alongside an identity verification
+      transaction. Commonly used to store an internal customer reference number,
+      application ID, or session token for later correlation.
+    type: string
+    context: scanner, biometric, docupass, transaction
+
+  - term: docupass
+    label: DocuPass
+    description: >-
+      The ID Analyzer hosted KYC onboarding product. A DocuPass session generates
+      a shareable URL and QR code that guides an end user through identity
+      document capture, biometric selfie, and optional e-signature without
+      requiring any front-end development.
+    type: object
+    context: docupass
+
+  - term: reference (docupass)
+    label: DocuPass Reference ID
+    description: >-
+      A unique identifier for a DocuPass session returned when the session is
+      created. Used to retrieve session status or delete the session.
+    type: string
+    context: docupass
+
+  - term: reusable
+    label: Reusable Session
+    description: >-
+      When set to true, a DocuPass verification URL can be visited by multiple
+      users. When false (default), the link is single-use and expires after
+      the first completion.
+    type: boolean
+    context: docupass
+
+  - term: mode
+    label: DocuPass Mode
+    description: >-
+      An integer controlling which verification steps are presented to the user
+      within a DocuPass hosted session (e.g. document-only, document+face, etc.).
+    type: integer
+    context: docupass
+
+  - term: mrz
+    label: Machine Readable Zone
+    description: >-
+      The standardized two- or three-line text block at the bottom of passports
+      and travel documents that encodes key personal data in a machine-readable
+      format (ICAO 9303). ID Analyzer validates and extracts MRZ data including
+      check-digit verification.
+    type: string
+    context: scanner
+
+  - term: AAMVA
+    label: AAMVA Barcode
+    description: >-
+      The PDF417 barcode format standardized by the American Association of Motor
+      Vehicle Administrators (AAMVA) and printed on the back of US and Canadian
+      driver licenses and ID cards. ID Analyzer parses AAMVA barcodes to extract
+      structured license data.
+    type: string
+    context: scanner
+
+  - term: aml
+    label: AML Screening
+    description: >-
+      Anti-Money Laundering screening that searches a subject's name or
+      document number against global sanctions lists (e.g. OFAC, UN Security
+      Council), Politically Exposed Persons (PEP) databases, and adverse-media
+      watchlists to support regulatory compliance.
+    type: object
+    context: aml
+
+  - term: entity
+    label: Entity Type
+    description: >-
+      The classification of an AML search subject as either an individual person
+      (0) or a corporation/legal entity (1).
+    type: integer
+    enum: [0, 1]
+    context: aml
+
+  - term: database
+    label: AML Database
+    description: >-
+      A specific sanctions, PEP, or watchlist database to be searched during an
+      AML screening call. If omitted, all available databases are searched.
+      Examples include us_ofac, eu_fsf, and un_sc.
+    type: string
+    context: aml
+
+  - term: canvasSize
+    label: Canvas Size
+    description: >-
+      Maximum width/height in pixels to which an input document image is scaled
+      before processing. Reducing canvas size improves inference speed at the
+      expense of OCR accuracy. Set to 0 to disable resizing.
+    type: integer
+    context: profile
+
+  - term: outputImage
+    label: Output Image
+    description: >-
+      Flag controlling whether a processed (cropped/corrected) version of the
+      identity document image is returned in the API response. Can be delivered
+      as a URL or base64-encoded string.
+    type: boolean
+    context: profile, scanner
+
+  - term: saveResult
+    label: Save Result
+    description: >-
+      Flag controlling whether transaction results are persisted to the ID
+      Analyzer cloud transaction vault for later retrieval.
+    type: boolean
+    context: profile
+
+  - term: webhook
+    label: Webhook URL
+    description: >-
+      A publicly accessible HTTPS endpoint that receives POST callbacks when an
+      identity verification transaction or DocuPass session is completed.
+      Must not point to localhost.
+    type: string
+    format: uri
+    context: profile, docupass
+
+  - term: decisionTrigger
+    label: Decision Trigger
+    description: >-
+      Score thresholds that determine when the cumulative validation warning
+      score is sufficient to set the KYC decision to "review" or "reject".
+      The reject threshold takes priority over review.
+    type: object
+    context: profile
+
+  - term: obscure
+    label: Obscure Fields
+    description: >-
+      A list of data field keys that are redacted from the transaction record
+      before cloud storage, and blurred in output/saved images. Used for
+      GDPR-compliant data minimization.
+    type: array
+    context: profile
+
+  - term: verifyName
+    label: Verify Name
+    description: >-
+      A user-supplied full name string that is compared against the name
+      extracted from the identity document. A mismatch contributes to the
+      transaction review/reject score.
+    type: string
+    context: scanner, docupass
+
+  - term: verifyDob
+    label: Verify Date of Birth
+    description: >-
+      A user-supplied date of birth (YYYY/MM/DD) compared against the date
+      of birth extracted from the identity document.
+    type: string
+    context: scanner, docupass
+
+  - term: verifyAge
+    label: Verify Age Range
+    description: >-
+      A user-supplied acceptable age range (minAge-maxAge) verified against
+      the document holder's calculated age. Useful for age-gating applications.
+    type: string
+    context: scanner, docupass
+
+  - term: restrictCountry
+    label: Restrict Country
+    description: >-
+      Comma-separated ISO ALPHA-2 country codes limiting accepted documents to
+      those issued by the specified countries. Documents from other countries
+      trigger a rejection.
+    type: string
+    context: scanner, profile
+
+  - term: restrictType
+    label: Restrict Document Type
+    description: >-
+      A string of accepted document type codes (P=Passport, D=Driver License,
+      I=Identity Card). Documents not matching one of the specified types
+      trigger a rejection.
+    type: string
+    context: scanner, profile
+
+  - term: imageToken
+    label: Image Token
+    description: >-
+      A secure token returned in a transaction response that identifies a
+      processed document image stored in the ID Analyzer image vault. Used
+      with the /imagevault/{imageToken} endpoint to download the image.
+    type: string
+    context: transaction
+
+  - term: exportType
+    label: Export Type
+    description: >-
+      The file format for bulk transaction export archives. Supported values
+      are "csv" (tabular, spreadsheet-compatible) and "json" (structured
+      records).
+    type: string
+    enum: [csv, json]
+    context: transaction

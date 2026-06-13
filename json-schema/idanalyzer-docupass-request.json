@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/idanalyzer/main/json-schema/idanalyzer-docupass-request.json",
+  "title": "ID Analyzer DocuPass Create Request",
+  "description": "Request schema for the ID Analyzer POST /docupass endpoint. Creates a hosted KYC verification session that generates a shareable URL and QR code.",
+  "type": "object",
+  "required": ["profile"],
+  "properties": {
+    "profile": {
+      "type": "string",
+      "description": "KYC Profile ID to apply to the verification session."
+    },
+    "mode": {
+      "type": "integer",
+      "description": "Docupass verification mode determining which steps are presented to the user.",
+      "default": 0
+    },
+    "contractFormat": {
+      "type": "string",
+      "description": "Output format for auto-generated contract documents.",
+      "enum": ["pdf", "docx", "html"],
+      "default": "pdf"
+    },
+    "contractGenerate": {
+      "type": "string",
+      "description": "Contract template ID(s) to auto-generate when the user completes verification."
+    },
+    "reusable": {
+      "type": "boolean",
+      "description": "If true, the Docupass verification link can be used by multiple users.",
+      "default": false
+    },
+    "contractPrefill": {
+      "type": "string",
+      "description": "Key-value data to prefill dynamic fields in the generated contract."
+    },
+    "contractSign": {
+      "type": "string",
+      "description": "Contract e-signature configuration."
+    },
+    "customData": {
+      "type": "string",
+      "description": "Arbitrary string stored alongside the resulting transaction."
+    },
+    "language": {
+      "type": "string",
+      "description": "Display language for the Docupass verification page (IETF language tag).",
+      "examples": ["en", "fr", "de", "es", "zh"]
+    },
+    "referenceDocument": {
+      "type": "string",
+      "description": "Reference document front image to verify the submitted document against."
+    },
+    "referenceDocumentBack": {
+      "type": "string",
+      "description": "Reference document back image to verify against."
+    },
+    "referenceFace": {
+      "type": "string",
+      "description": "Reference face image to verify the user's selfie against."
+    },
+    "userPhone": {
+      "type": "string",
+      "description": "User phone number for SMS delivery of the verification link."
+    },
+    "verifyAddress": {
+      "type": "string",
+      "description": "Address to cross-check against the submitted identity document."
+    },
+    "verifyAge": {
+      "type": "string",
+      "description": "Acceptable age range (minAge-maxAge format).",
+      "pattern": "^\\d+-\\d+$",
+      "examples": ["18-99"]
+    },
+    "verifyDOB": {
+      "type": "string",
+      "description": "Date of birth to cross-check against the submitted document (YYYY/MM/DD).",
+      "pattern": "^\\d{4}/\\d{2}/\\d{2}$"
+    },
+    "verifyDocumentNumber": {
+      "type": "string",
+      "description": "Document or ID number to cross-check against the submitted document."
+    },
+    "verifyName": {
+      "type": "string",
+      "description": "Full name to cross-check against the submitted document."
+    },
+    "verifyPostcode": {
+      "type": "string",
+      "description": "Postal/ZIP code to cross-check against the submitted document."
+    }
+  },
+  "additionalProperties": false
+}

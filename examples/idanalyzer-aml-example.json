@@ -1,0 +1,37 @@
+{
+  "title": "ID Analyzer AML Screening Example",
+  "description": "Example request and response for the POST /aml endpoint performing AML/PEP sanctions screening.",
+  "request": {
+    "method": "POST",
+    "url": "https://api2.idanalyzer.com/aml",
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Api-Key": "YOUR_API_KEY"
+    },
+    "body": {
+      "name": "John Smith",
+      "entity": 0,
+      "country": "US",
+      "birthYear": "1975"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "hits": [
+        {
+          "entityId": "aml_entity_789",
+          "name": "JOHN WILLIAM SMITH",
+          "type": "individual",
+          "databases": ["us_ofac"],
+          "nationality": "US",
+          "birthYear": "1975",
+          "matchScore": 0.82,
+          "aliases": ["Johnny Smith", "J. W. Smith"],
+          "programs": ["SDGT"]
+        }
+      ],
+      "total": 1
+    }
+  }
+}

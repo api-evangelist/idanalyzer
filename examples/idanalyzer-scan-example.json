@@ -1,0 +1,46 @@
+{
+  "title": "ID Analyzer Full KYC Scan Example",
+  "description": "Example request and response for the POST /scan endpoint performing a full KYC document scan with biometric face verification.",
+  "request": {
+    "method": "POST",
+    "url": "https://api2.idanalyzer.com/scan",
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Api-Key": "YOUR_API_KEY"
+    },
+    "body": {
+      "document": "https://example.com/passport-front.jpg",
+      "face": "https://example.com/selfie.jpg",
+      "profile": "security_medium",
+      "verifyName": "John Smith",
+      "verifyDob": "1985/03/22",
+      "customData": "customer-ref-12345"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "transactionId": "txn_abc123def456",
+      "decision": "accept",
+      "data": {
+        "firstName": "JOHN",
+        "lastName": "SMITH",
+        "dob": "1985/03/22",
+        "documentNumber": "X1234567",
+        "documentType": "P",
+        "documentCountry": "US",
+        "expiryDate": "2030/03/22",
+        "sex": "M",
+        "nationality": "USA",
+        "mrz1": "P<USASMITH<<JOHN<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+        "mrz2": "X12345679USA8503220M3003224<<<<<<<<<<<<<<<8"
+      },
+      "faceMatch": {
+        "confidence": 0.97,
+        "decision": "accept"
+      },
+      "warning": [],
+      "outputImage": "https://vault.idanalyzer.com/images/txn_abc123def456_front.jpg"
+    }
+  }
+}

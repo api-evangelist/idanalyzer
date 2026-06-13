@@ -1,0 +1,341 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "idanalyzer": "https://www.idanalyzer.com/vocab/",
+
+    "transactionId": {
+      "@id": "idanalyzer:transactionId",
+      "@type": "xsd:string"
+    },
+    "decision": {
+      "@id": "idanalyzer:decision",
+      "@type": "xsd:string"
+    },
+    "profile": {
+      "@id": "idanalyzer:kycProfile",
+      "@type": "xsd:string"
+    },
+    "profileOverride": {
+      "@id": "idanalyzer:profileOverride",
+      "@type": "@json"
+    },
+    "document": {
+      "@id": "idanalyzer:documentImage",
+      "@type": "xsd:string"
+    },
+    "documentBack": {
+      "@id": "idanalyzer:documentBackImage",
+      "@type": "xsd:string"
+    },
+    "face": {
+      "@id": "idanalyzer:facePhoto",
+      "@type": "xsd:string"
+    },
+    "faceVideo": {
+      "@id": "idanalyzer:faceVideo",
+      "@type": "xsd:string"
+    },
+    "reference": {
+      "@id": "idanalyzer:referenceFaceImage",
+      "@type": "xsd:string"
+    },
+    "customData": {
+      "@id": "idanalyzer:customData",
+      "@type": "xsd:string"
+    },
+    "reusable": {
+      "@id": "idanalyzer:reusable",
+      "@type": "xsd:boolean"
+    },
+    "mode": {
+      "@id": "idanalyzer:docupassMode",
+      "@type": "xsd:integer"
+    },
+    "entity": {
+      "@id": "idanalyzer:amlEntityType",
+      "@type": "xsd:integer"
+    },
+    "database": {
+      "@id": "idanalyzer:amlDatabase",
+      "@type": "xsd:string"
+    },
+    "canvasSize": {
+      "@id": "idanalyzer:canvasSize",
+      "@type": "xsd:integer"
+    },
+    "outputImage": {
+      "@id": "idanalyzer:outputImage",
+      "@type": "xsd:boolean"
+    },
+    "outputType": {
+      "@id": "idanalyzer:outputType",
+      "@type": "xsd:string"
+    },
+    "saveResult": {
+      "@id": "idanalyzer:saveResult",
+      "@type": "xsd:boolean"
+    },
+    "saveImage": {
+      "@id": "idanalyzer:saveImage",
+      "@type": "xsd:boolean"
+    },
+    "webhook": {
+      "@id": "idanalyzer:webhookUrl",
+      "@type": "@id"
+    },
+    "decisionTrigger": {
+      "@id": "idanalyzer:decisionTrigger",
+      "@type": "@json"
+    },
+    "obscure": {
+      "@id": "idanalyzer:obscureFields",
+      "@container": "@list"
+    },
+    "verifyName": {
+      "@id": "idanalyzer:verifyName",
+      "@type": "xsd:string"
+    },
+    "verifyDob": {
+      "@id": "idanalyzer:verifyDateOfBirth",
+      "@type": "xsd:string"
+    },
+    "verifyAge": {
+      "@id": "idanalyzer:verifyAgeRange",
+      "@type": "xsd:string"
+    },
+    "verifyAddress": {
+      "@id": "idanalyzer:verifyAddress",
+      "@type": "xsd:string"
+    },
+    "verifyPostcode": {
+      "@id": "idanalyzer:verifyPostcode",
+      "@type": "xsd:string"
+    },
+    "verifyDocumentNumber": {
+      "@id": "idanalyzer:verifyDocumentNumber",
+      "@type": "xsd:string"
+    },
+    "restrictCountry": {
+      "@id": "idanalyzer:restrictCountry",
+      "@type": "xsd:string"
+    },
+    "restrictState": {
+      "@id": "idanalyzer:restrictState",
+      "@type": "xsd:string"
+    },
+    "restrictType": {
+      "@id": "idanalyzer:restrictDocumentType",
+      "@type": "xsd:string"
+    },
+    "imageToken": {
+      "@id": "idanalyzer:imageToken",
+      "@type": "xsd:string"
+    },
+    "exportType": {
+      "@id": "idanalyzer:exportType",
+      "@type": "xsd:string"
+    },
+    "contractGenerate": {
+      "@id": "idanalyzer:contractTemplateIds",
+      "@type": "xsd:string"
+    },
+    "contractFormat": {
+      "@id": "idanalyzer:contractFormat",
+      "@type": "xsd:string"
+    },
+    "contractPrefill": {
+      "@id": "idanalyzer:contractPrefill",
+      "@type": "@json"
+    },
+    "templateId": {
+      "@id": "idanalyzer:contractTemplateId",
+      "@type": "xsd:string"
+    },
+    "profileId": {
+      "@id": "idanalyzer:kycProfileId",
+      "@type": "xsd:string"
+    },
+    "webhookId": {
+      "@id": "idanalyzer:webhookDeliveryId",
+      "@type": "xsd:string"
+    },
+    "ip": {
+      "@id": "idanalyzer:userIpAddress",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    },
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updatedAt": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "url": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "data": {
+      "@id": "idanalyzer:extractedData",
+      "@type": "@json"
+    },
+    "warning": {
+      "@id": "idanalyzer:validationWarning",
+      "@container": "@list"
+    },
+    "confidence": {
+      "@id": "idanalyzer:confidenceScore",
+      "@type": "xsd:decimal"
+    },
+    "hits": {
+      "@id": "idanalyzer:amlHits",
+      "@container": "@list"
+    },
+    "total": {
+      "@id": "idanalyzer:totalCount",
+      "@type": "xsd:integer"
+    },
+    "order": {
+      "@id": "idanalyzer:sortOrder",
+      "@type": "xsd:integer"
+    },
+    "limit": {
+      "@id": "idanalyzer:pageLimit",
+      "@type": "xsd:integer"
+    },
+    "offset": {
+      "@id": "idanalyzer:pageOffset",
+      "@type": "xsd:integer"
+    },
+    "firstName": {
+      "@id": "schema:givenName",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "schema:familyName",
+      "@type": "xsd:string"
+    },
+    "dob": {
+      "@id": "schema:birthDate",
+      "@type": "xsd:string"
+    },
+    "nationality": {
+      "@id": "schema:nationality",
+      "@type": "xsd:string"
+    },
+    "documentNumber": {
+      "@id": "idanalyzer:documentNumber",
+      "@type": "xsd:string"
+    },
+    "documentType": {
+      "@id": "idanalyzer:documentType",
+      "@type": "xsd:string"
+    },
+    "documentCountry": {
+      "@id": "idanalyzer:issuingCountry",
+      "@type": "xsd:string"
+    },
+    "expiryDate": {
+      "@id": "idanalyzer:documentExpiryDate",
+      "@type": "xsd:string"
+    },
+    "mrz1": {
+      "@id": "idanalyzer:mrzLine1",
+      "@type": "xsd:string"
+    },
+    "mrz2": {
+      "@id": "idanalyzer:mrzLine2",
+      "@type": "xsd:string"
+    },
+    "sex": {
+      "@id": "schema:gender",
+      "@type": "xsd:string"
+    },
+    "qrCode": {
+      "@id": "idanalyzer:qrCodeImage",
+      "@type": "xsd:string"
+    },
+    "userPhone": {
+      "@id": "schema:telephone",
+      "@type": "xsd:string"
+    },
+    "language": {
+      "@id": "schema:inLanguage",
+      "@type": "xsd:string"
+    },
+    "birthYear": {
+      "@id": "idanalyzer:birthYear",
+      "@type": "xsd:gYear"
+    },
+    "idNumber": {
+      "@id": "idanalyzer:idNumber",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "schema:addressCountry",
+      "@type": "xsd:string"
+    },
+    "plan": {
+      "@id": "idanalyzer:subscriptionPlan",
+      "@type": "xsd:string"
+    },
+    "quota": {
+      "@id": "idanalyzer:apiQuota",
+      "@type": "@json"
+    },
+    "usage": {
+      "@id": "idanalyzer:apiUsage",
+      "@type": "@json"
+    },
+    "balance": {
+      "@id": "idanalyzer:creditBalance",
+      "@type": "xsd:decimal"
+    },
+    "success": {
+      "@id": "idanalyzer:operationSuccess",
+      "@type": "xsd:boolean"
+    },
+    "event": {
+      "@id": "idanalyzer:webhookEvent",
+      "@type": "xsd:string"
+    },
+    "statusCode": {
+      "@id": "idanalyzer:httpStatusCode",
+      "@type": "xsd:integer"
+    },
+    "timezone": {
+      "@id": "idanalyzer:timezone",
+      "@type": "xsd:string"
+    },
+    "content": {
+      "@id": "schema:text",
+      "@type": "xsd:string"
+    },
+    "orientation": {
+      "@id": "idanalyzer:pageOrientation",
+      "@type": "xsd:string"
+    },
+    "font": {
+      "@id": "idanalyzer:documentFont",
+      "@type": "xsd:string"
+    },
+    "fillData": {
+      "@id": "idanalyzer:templateFillData",
+      "@type": "@json"
+    },
+    "format": {
+      "@id": "idanalyzer:documentFormat",
+      "@type": "xsd:string"
+    }
+  }
+}

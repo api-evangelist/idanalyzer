@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/idanalyzer/main/json-schema/idanalyzer-scan-request.json",
+  "title": "ID Analyzer Scan Request",
+  "description": "Request schema for the ID Analyzer /scan endpoint. Initiates a full KYC identity document scan with optional biometric face verification.",
+  "type": "object",
+  "required": ["document", "profile"],
+  "properties": {
+    "document": {
+      "type": "string",
+      "description": "Front of identity document image. Accepts a URL, base64-encoded image, local file path, or cache reference (ref:...)."
+    },
+    "documentBack": {
+      "type": "string",
+      "description": "Back of identity document image (URL, base64, file path, or cache reference)."
+    },
+    "face": {
+      "type": "string",
+      "description": "Selfie face photo for biometric verification (URL, base64, file path, or cache reference)."
+    },
+    "faceVideo": {
+      "type": "string",
+      "description": "Selfie face video for liveness detection (URL, base64, or file path). Used if face is not provided."
+    },
+    "profile": {
+      "type": "string",
+      "description": "KYC Profile ID or preset profile name.",
+      "examples": ["security_none", "security_low", "security_medium", "security_high"]
+    },
+    "profileOverride": {
+      "type": "object",
+      "description": "Per-request profile configuration overrides applied on top of the base profile.",
+      "additionalProperties": true
+    },
+    "verifyName": {
+      "type": "string",
+      "description": "Full name to cross-check against the document data."
+    },
+    "verifyDob": {
+      "type": "string",
+      "description": "Date of birth to verify in YYYY/MM/DD format.",
+      "pattern": "^\\d{4}/\\d{2}/\\d{2}$",
+      "examples": ["1990/01/15"]
+    },
+    "verifyAge": {
+      "type": "string",
+      "description": "Age range to verify (minAge-maxAge format).",
+      "pattern": "^\\d+-\\d+$",
+      "examples": ["18-99"]
+    },
+    "verifyAddress": {
+      "type": "string",
+      "description": "Address to cross-check against the document."
+    },
+    "verifyPostcode": {
+      "type": "string",
+      "description": "Postal/ZIP code to cross-check against the document."
+    },
+    "verifyDocumentNumber": {
+      "type": "string",
+      "description": "Document or ID number to cross-check against the document."
+    },
+    "restrictCountry": {
+      "type": "string",
+      "description": "Comma-separated ISO ALPHA-2 country codes. Reject documents not issued by these countries.",
+      "examples": ["US,CA,UK"]
+    },
+    "restrictState": {
+      "type": "string",
+      "description": "Comma-separated US/CA state names or abbreviations. Reject documents not issued by these states.",
+      "examples": ["CA,TX"]
+    },
+    "restrictType": {
+      "type": "string",
+      "description": "Accepted document types: P=Passport, D=Driver License, I=Identity Card.",
+      "examples": ["DIP", "P", "DI"]
+    },
+    "contractGenerate": {
+      "type": "string",
+      "description": "Comma-separated contract template IDs (up to 5) for automatic document generation on scan completion."
+    },
+    "contractFormat": {
+      "type": "string",
+      "description": "Output format for auto-generated contract documents.",
+      "enum": ["PDF", "DOCX", "HTML"],
+      "default": "PDF"
+    },
+    "contractPrefill": {
+      "type": "object",
+      "description": "Key-value pairs used to prefill dynamic fields in contract templates.",
+      "additionalProperties": true
+    },
+    "ip": {
+      "type": "string",
+      "description": "User IP address for country cross-check. Uses HTTP connection IP if omitted.",
+      "format": "ipv4"
+    },
+    "customData": {
+      "type": "string",
+      "description": "Arbitrary string stored alongside the transaction (e.g. internal customer reference).",
+      "maxLength": 1024
+    },
+    "client": {
+      "type": "string",
+      "description": "Client library identifier, set automatically by official SDKs."
+    }
+  },
+  "additionalProperties": false
+}

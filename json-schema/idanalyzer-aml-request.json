@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/idanalyzer/main/json-schema/idanalyzer-aml-request.json",
+  "title": "ID Analyzer AML Search Request",
+  "description": "Request schema for the ID Analyzer /aml endpoint. Searches global sanctions lists, PEP databases, and watchlists.",
+  "type": "object",
+  "anyOf": [
+    {"required": ["name"]},
+    {"required": ["idNumber"]}
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Person or business name to search in AML databases."
+    },
+    "idNumber": {
+      "type": "string",
+      "description": "Document or ID number to search in AML databases."
+    },
+    "entity": {
+      "type": "integer",
+      "description": "Entity type for the search subject.",
+      "enum": [0, 1],
+      "default": 0,
+      "x-enum-descriptions": {
+        "0": "Person / Individual",
+        "1": "Corporation / Legal Entity"
+      }
+    },
+    "country": {
+      "type": "string",
+      "description": "Two-digit ISO 3166-1 alpha-2 country code to narrow the search by nationality or country of origin.",
+      "pattern": "^[A-Z]{2}$",
+      "examples": ["US", "GB", "DE"]
+    },
+    "database": {
+      "type": "array",
+      "description": "Specific AML databases to search. Searches all available databases if omitted.",
+      "items": {
+        "type": "string"
+      },
+      "examples": [["us_ofac", "eu_fsf", "un_sc"]]
+    },
+    "birthYear": {
+      "type": "string",
+      "description": "Year of birth to narrow the search results.",
+      "pattern": "^\\d{4}$",
+      "examples": ["1975"]
+    }
+  },
+  "additionalProperties": false
+}

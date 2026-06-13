@@ -1,0 +1,34 @@
+{
+  "title": "ID Analyzer DocuPass KYC Session Example",
+  "description": "Example request and response for the POST /docupass endpoint creating a hosted KYC verification session.",
+  "request": {
+    "method": "POST",
+    "url": "https://api2.idanalyzer.com/docupass",
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Api-Key": "YOUR_API_KEY"
+    },
+    "body": {
+      "profile": "kyc-profile-id-001",
+      "mode": 0,
+      "reusable": false,
+      "language": "en",
+      "contractGenerate": "template-id-001",
+      "contractFormat": "pdf",
+      "customData": "onboarding-session-42",
+      "verifyAge": "18-99"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "reference": "dp_ref_xyz789",
+      "url": "https://verify.idanalyzer.com/dp/dp_ref_xyz789",
+      "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+      "mode": 0,
+      "profile": "kyc-profile-id-001",
+      "reusable": false,
+      "createdAt": "2026-06-13T12:00:00Z"
+    }
+  }
+}
