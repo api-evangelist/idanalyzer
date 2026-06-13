@@ -1,0 +1,170 @@
+specificationVersion: '1.0'
+id: idanalyzer-finops
+name: ID Analyzer FinOps Framework
+description: >-
+  FinOps cost management reference for ID Analyzer API consumption, aligned
+  to the FinOps Foundation FOCUS specification. Covers cost allocation by
+  API product, credit-based unit economics, optimization levers, and
+  governance controls for identity verification workloads.
+url: https://www.idanalyzer.com/en/pricing
+
+provider:
+  name: ID Analyzer
+  legalName: Evith Technology Ltd.
+  website: https://www.idanalyzer.com/en
+  pricingPage: https://www.idanalyzer.com/en/pricing
+
+costModel:
+  type: subscription-plus-overage
+  billingPeriod: monthly
+  annualOption: true
+  annualDiscount: 25%
+  currency: USD
+  unitOfMeasure: API credit
+  description: >-
+    Costs consist of a fixed monthly subscription fee that includes a bundled
+    credit quota, plus per-call overage charges when the quota is exhausted.
+    DocuPass sessions consume 2 credits vs 1 credit for direct API calls,
+    so workload composition materially affects total cost.
+
+skus:
+  - id: plan-free
+    name: Try Free Plan
+    price: 0.00
+    period: monthly
+    includedCredits: 100
+    overagePricePerCall: null
+    notes: Test mode only; not for production traffic
+
+  - id: plan-entry
+    name: Entry Plan
+    price: 89.00
+    period: monthly
+    includedCredits: 1000
+    overagePricePerCall: 0.12
+    effectivePricePerIncludedCredit: 0.089
+    annualPrice: 801.00
+    annualPriceNote: Approximately 89 * 0.75 * 12 = $801/year (25% discount)
+
+  - id: plan-advanced
+    name: Advanced Plan
+    price: 350.00
+    period: monthly
+    includedCredits: 5000
+    overagePricePerCall: 0.10
+    effectivePricePerIncludedCredit: 0.070
+    annualPrice: 3150.00
+    annualPriceNote: Approximately 350 * 0.75 * 12 = $3,150/year (25% discount)
+
+  - id: plan-business
+    name: Business Plan
+    price: 880.00
+    period: monthly
+    includedCredits: 15000
+    overagePricePerCall: 0.08
+    effectivePricePerIncludedCredit: 0.059
+    annualPrice: 7920.00
+    annualPriceNote: Approximately 880 * 0.75 * 12 = $7,920/year (25% discount)
+
+  - id: plan-enterprise
+    name: Enterprise (ID Fort On-Premise)
+    price: null
+    period: custom
+    notes: Custom pricing; contact sales for on-premise deployment
+
+unitEconomics:
+  description: >-
+    Cost-per-verification varies by plan tier and verification type.
+    Blending DocuPass (2 credits) and direct API scans (1 credit) in a
+    workload shifts the effective cost per verification upward.
+  scenarios:
+    - scenario: Entry — all direct scans
+      verificationsPerMonth: 1000
+      creditsPerVerification: 1
+      planCost: 89.00
+      costPerVerification: 0.089
+
+    - scenario: Entry — all DocuPass sessions
+      verificationsPerMonth: 500
+      creditsPerVerification: 2
+      planCost: 89.00
+      costPerVerification: 0.178
+
+    - scenario: Advanced — all direct scans
+      verificationsPerMonth: 5000
+      creditsPerVerification: 1
+      planCost: 350.00
+      costPerVerification: 0.070
+
+    - scenario: Business — all direct scans
+      verificationsPerMonth: 15000
+      creditsPerVerification: 1
+      planCost: 880.00
+      costPerVerification: 0.059
+
+optimization:
+  strategies:
+    - name: Right-size plan to volume
+      description: >-
+        Monitor monthly credit consumption and compare against quota.
+        Overage at $0.12/call on Entry exceeds the marginal cost of
+        upgrading to Advanced ($0.10/call). Upgrade when sustained
+        overage exceeds the plan cost difference ($261/month).
+
+    - name: Prefer annual billing
+      description: >-
+        Annual billing provides a 25% discount. Commit to an annual
+        plan once volume is predictable to reduce monthly spend by
+        one quarter.
+
+    - name: Minimize DocuPass usage for high-volume flows
+      description: >-
+        DocuPass hosted sessions consume 2 credits vs 1 for direct
+        Scanner API calls. For high-throughput, developer-controlled
+        flows, prefer the Scanner API to halve credit consumption.
+
+    - name: Monitor AML screening frequency
+      description: >-
+        AML/PEP screening consumes 1 credit per search. For repeated
+        checks on the same individual, cache results and re-screen
+        only on updated watchlist events to avoid redundant credit
+        spend.
+
+    - name: Use veryQuickScan for low-risk documents
+      description: >-
+        The veryQuickScan endpoint may suffice for low-risk verification
+        contexts, reducing processing time and enabling higher throughput
+        within the same credit budget.
+
+governance:
+  budgetAlerts:
+    - threshold: 80%
+      action: Alert engineering team when 80% of monthly credits are consumed
+    - threshold: 100%
+      action: >-
+        Review overage charges; consider plan upgrade if overage is
+        recurring across two consecutive months
+
+  allocation:
+    - dimension: API product
+      description: >-
+        Tag transactions by product (Scanner, Biometric, AML, DocuPass,
+        Vault) using webhook metadata and Transaction Vault records to
+        attribute credit spend by service line.
+
+    - dimension: Environment
+      description: >-
+        Separate API keys for production and development/staging
+        environments. Free plan keys should be used for all
+        non-production testing to avoid consuming paid credits.
+
+  complianceNotes:
+    - >-
+        EU endpoint (api2-eu.idanalyzer.com) must be used for
+        workloads processing EU resident data to maintain GDPR
+        data residency. This may affect latency and should be
+        factored into SLA planning.
+    - >-
+        Transaction Vault storage limits per plan; purge verification
+        records per GDPR retention policies to remain within storage
+        quotas without additional cost.

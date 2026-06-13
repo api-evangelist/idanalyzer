@@ -1,0 +1,98 @@
+specificationVersion: '0.1'
+id: idanalyzer-rate-limits
+name: ID Analyzer Rate Limits
+description: >-
+  ID Analyzer enforces rate limits through a credit-based quota system.
+  Each API plan includes a monthly credit allowance; credits are consumed
+  per API call (1 credit for a standard scan, 2 credits for DocuPass
+  verifications). Overage charges apply when the monthly quota is exceeded.
+  API keys authenticate requests; the US and EU endpoints are independent.
+url: https://developer.idanalyzer.com
+limits:
+  - type: MonthlyCredits
+    scope: account
+    description: >-
+      Monthly API credit quota enforced per account. Credit consumption
+      varies by endpoint: 1 credit for Scanner/Biometric/AML calls,
+      2 credits for DocuPass-hosted verification sessions.
+    tiers:
+      - plan: Try Free
+        limit: 100
+        unit: credits
+        period: monthly
+        mode: test
+      - plan: Entry
+        limit: 1000
+        unit: credits
+        period: monthly
+        overageRate: 0.12
+        overageCurrency: USD
+        overageUnit: per-call
+      - plan: Advanced
+        limit: 5000
+        unit: credits
+        period: monthly
+        overageRate: 0.10
+        overageCurrency: USD
+        overageUnit: per-call
+      - plan: Business
+        limit: 15000
+        unit: credits
+        period: monthly
+        overageRate: 0.08
+        overageCurrency: USD
+        overageUnit: per-call
+
+  - type: CreditConsumption
+    scope: endpoint
+    description: >-
+      Credit cost per API call by operation type.
+    endpoints:
+      - operation: Document Scan (Scanner API)
+        credits: 1
+      - operation: Quick Scan
+        credits: 1
+      - operation: Very Quick Scan
+        credits: 1
+      - operation: Biometric Face Verify
+        credits: 1
+      - operation: Biometric Liveness
+        credits: 1
+      - operation: AML Search
+        credits: 1
+      - operation: AML Search v3
+        credits: 1
+      - operation: DocuPass Session (hosted verification)
+        credits: 2
+
+  - type: ResponseTime
+    scope: global
+    description: >-
+      ID Analyzer targets a 3-second average response time for standard
+      identity document scans under normal operating conditions.
+    target: 3 seconds average
+    applies_to:
+      - Scanner API
+      - Biometric API
+
+  - type: RegionalEndpoints
+    scope: global
+    description: >-
+      Traffic is routed to independent US or EU endpoint clusters. Selecting
+      the EU endpoint ensures data residency within the European Union for
+      GDPR compliance. Rate limits apply per account across both regions.
+    endpoints:
+      - region: US
+        url: https://api2.idanalyzer.com
+        default: true
+      - region: EU
+        url: https://api2-eu.idanalyzer.com
+        default: false
+
+authentication:
+  type: API Key
+  method: >-
+    API key is passed per request to each SDK client instance, or set via
+    the IDANALYZER_KEY environment variable. Keys are scoped to a single
+    account and control access to all APIs within that account's plan.
+  keyHeader: x-api-key
