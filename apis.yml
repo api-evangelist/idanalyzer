@@ -135,6 +135,12 @@ apis:
         url: https://www.idanalyzer.com/contact-us
 
 common:
+  - type: TrustCenter
+    url: security/idanalyzer-trust-center.yml
+  - type: DomainSecurity
+    url: security/idanalyzer-domain-security.yml
+  - type: Authentication
+    url: authentication/idanalyzer-authentication.yml
   - type: Website
     url: https://www.idanalyzer.com/en
   - type: Documentation
