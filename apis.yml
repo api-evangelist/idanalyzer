@@ -135,6 +135,8 @@ apis:
         url: https://www.idanalyzer.com/contact-us
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/idanalyzer-agentic-access.yml
   - type: TrustCenter
     url: security/idanalyzer-trust-center.yml
   - type: DomainSecurity
