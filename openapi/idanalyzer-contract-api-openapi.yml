@@ -1,0 +1,342 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account Contract API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: Contract
+  description: Contract template management and document generation
+paths:
+  /generate:
+    post:
+      tags:
+      - Contract
+      operationId: generateContract
+      summary: Generate contract document
+      description: Generate a contract document using a template and optionally populate it with data from a transaction. Supports PDF, DOCX, and HTML output formats.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContractGenerateRequest'
+      responses:
+        '200':
+          description: Generated contract document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContractGenerateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /contract:
+    get:
+      tags:
+      - Contract
+      operationId: listTemplates
+      summary: List contract templates
+      description: Retrieve a paginated list of contract templates.
+      parameters:
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: templateId
+        in: query
+        description: Filter result by template ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of contract templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+      - Contract
+      operationId: createTemplate
+      summary: Create contract template
+      description: Create a new contract template with HTML content.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreateRequest'
+      responses:
+        '200':
+          description: Created contract template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /contract/{templateId}:
+    get:
+      tags:
+      - Contract
+      operationId: getTemplate
+      summary: Get contract template
+      description: Retrieve a single contract template by ID.
+      parameters:
+      - name: templateId
+        in: path
+        required: true
+        description: Template ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Contract template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+      - Contract
+      operationId: updateTemplate
+      summary: Update contract template
+      description: Update an existing contract template.
+      parameters:
+      - name: templateId
+        in: path
+        required: true
+        description: Template ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreateRequest'
+      responses:
+        '200':
+          description: Updated contract template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Contract
+      operationId: deleteTemplate
+      summary: Delete contract template
+      description: Delete a contract template by ID.
+      parameters:
+      - name: templateId
+        in: path
+        required: true
+        description: Template ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Template deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    TemplateResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          description: Template ID
+        name:
+          type: string
+          description: Template name
+        content:
+          type: string
+          description: Template HTML content
+        orientation:
+          type: string
+        timezone:
+          type: string
+        font:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    ContractGenerateRequest:
+      type: object
+      required:
+      - templateId
+      properties:
+        templateId:
+          type: string
+          description: Contract template ID
+        format:
+          type: string
+          description: Output format
+          enum:
+          - PDF
+          - DOCX
+          - HTML
+          default: PDF
+        transactionId:
+          type: string
+          description: Fill template with data from this transaction ID
+        fillData:
+          type: object
+          description: Key-value pairs to autofill template dynamic fields
+          additionalProperties: true
+    TemplateCreateRequest:
+      type: object
+      required:
+      - name
+      - content
+      properties:
+        name:
+          type: string
+          description: Template name
+        content:
+          type: string
+          description: Template HTML content
+        orientation:
+          type: string
+          description: Page orientation (0=Portrait, 1=Landscape)
+          enum:
+          - '0'
+          - '1'
+          default: '0'
+        timezone:
+          type: string
+          description: Template timezone (TZ database name)
+          default: UTC
+          example: America/New_York
+        font:
+          type: string
+          description: Template font
+          default: Open Sans
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ContractGenerateResponse:
+      type: object
+      properties:
+        document:
+          type: string
+          description: Base64-encoded generated document or download URL
+        format:
+          type: string
+          description: Output format used
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    TemplateListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateResponse'
+        total:
+          type: integer
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

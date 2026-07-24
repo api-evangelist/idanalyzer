@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account Webhook API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: Webhook
+  description: Webhook delivery log management
+paths:
+  /webhook:
+    get:
+      tags:
+      - Webhook
+      operationId: listWebhooks
+      summary: List webhook delivery logs
+      description: Retrieve a paginated list of webhook delivery logs with optional filtering by event type, success status, and date range.
+      parameters:
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: event
+        in: query
+        description: Filter by event type
+        schema:
+          type: string
+      - name: success
+        in: query
+        description: Filter by delivery success (1=success, 0=failure)
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+      - name: createdAtMin
+        in: query
+        description: Filter deliveries created after this timestamp
+        schema:
+          type: string
+      - name: createdAtMax
+        in: query
+        description: Filter deliveries created before this timestamp
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of webhook delivery logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /webhook/{webhookId}:
+    post:
+      tags:
+      - Webhook
+      operationId: resendWebhook
+      summary: Resend webhook delivery
+      description: Resend a webhook delivery by ID.
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        description: Webhook delivery ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Webhook resent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Webhook
+      operationId: deleteWebhook
+      summary: Delete webhook delivery log
+      description: Delete a webhook delivery log by ID.
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        description: Webhook delivery ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Webhook delivery log deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    WebhookListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookDelivery'
+        total:
+          type: integer
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    WebhookDelivery:
+      type: object
+      properties:
+        webhookId:
+          type: string
+          description: Webhook delivery ID
+        event:
+          type: string
+          description: Event type that triggered the webhook
+        url:
+          type: string
+          description: Webhook destination URL
+        success:
+          type: boolean
+          description: Whether the delivery was successful
+        statusCode:
+          type: integer
+          description: HTTP response status code from the webhook endpoint
+        createdAt:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

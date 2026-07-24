@@ -1,0 +1,415 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account Transaction API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: Transaction
+  description: Transaction record management and export
+paths:
+  /transaction:
+    get:
+      tags:
+      - Transaction
+      operationId: listTransactions
+      summary: List transactions
+      description: Retrieve a paginated list of identity verification transaction history with optional filtering by date range, decision, Docupass reference, custom data, and profile ID.
+      parameters:
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: createdAtMin
+        in: query
+        description: List transactions created after this UNIX timestamp
+        schema:
+          type: integer
+          format: int64
+      - name: createdAtMax
+        in: query
+        description: List transactions created before this UNIX timestamp
+        schema:
+          type: integer
+          format: int64
+      - name: customData
+        in: query
+        description: Filter by customData field
+        schema:
+          type: string
+      - name: decision
+        in: query
+        description: Filter by decision
+        schema:
+          type: string
+          enum:
+          - accept
+          - review
+          - reject
+      - name: docupass
+        in: query
+        description: Filter by Docupass reference
+        schema:
+          type: string
+      - name: profileId
+        in: query
+        description: Filter by KYC Profile ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /transaction/{transactionId}:
+    get:
+      tags:
+      - Transaction
+      operationId: getTransaction
+      summary: Get transaction
+      description: Retrieve a single identity verification transaction record by ID.
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        description: Transaction ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+      - Transaction
+      operationId: updateTransaction
+      summary: Update transaction decision
+      description: Update the decision on a transaction record. The updated decision will be relayed to the configured webhook.
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        description: Transaction ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - decision
+              properties:
+                decision:
+                  type: string
+                  enum:
+                  - accept
+                  - review
+                  - reject
+                  description: New decision for the transaction
+      responses:
+        '200':
+          description: Transaction updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Transaction
+      operationId: deleteTransaction
+      summary: Delete transaction
+      description: Delete a transaction record by ID.
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        description: Transaction ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /imagevault/{imageToken}:
+    get:
+      tags:
+      - Transaction
+      operationId: getTransactionImage
+      summary: Download transaction image
+      description: Download a transaction image using the image token from the transaction response.
+      parameters:
+      - name: imageToken
+        in: path
+        required: true
+        description: Image token from transaction API response
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Image file stream
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /filevault/{fileName}:
+    get:
+      tags:
+      - Transaction
+      operationId: getTransactionFile
+      summary: Download transaction file
+      description: Download a transaction file (e.g. PDF audit report) using the secured file name.
+      parameters:
+      - name: fileName
+        in: path
+        required: true
+        description: Secured file name from transaction response
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File stream
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /export/transaction:
+    post:
+      tags:
+      - Transaction
+      operationId: exportTransactions
+      summary: Export transaction archive
+      description: Export transaction records as a CSV or JSON archive file. Supports filtering by date range, decision, Docupass reference, custom data, and profile ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportTransactionRequest'
+      responses:
+        '200':
+          description: Export URL or archive data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportTransactionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    ExportTransactionRequest:
+      type: object
+      properties:
+        exportType:
+          type: string
+          description: Export format
+          enum:
+          - csv
+          - json
+          default: csv
+        transactionId:
+          type: array
+          description: Export only these transaction IDs (exports all if omitted)
+          items:
+            type: string
+        ignoreUnrecognized:
+          type: boolean
+          description: Exclude unrecognized documents from export
+          default: false
+        ignoreDuplicate:
+          type: boolean
+          description: Exclude duplicate entries from export
+          default: false
+        createdAtMin:
+          type: integer
+          format: int64
+          description: Export transactions created after this UNIX timestamp
+        createdAtMax:
+          type: integer
+          format: int64
+          description: Export transactions created before this UNIX timestamp
+        customData:
+          type: string
+          description: Filter export by customData field
+        decision:
+          type: string
+          enum:
+          - accept
+          - review
+          - reject
+          description: Filter export by decision
+        docupass:
+          type: string
+          description: Filter export by Docupass reference
+        profileId:
+          type: string
+          description: Filter export by KYC Profile ID
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    TransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          description: Unique transaction identifier
+        decision:
+          type: string
+          enum:
+          - accept
+          - review
+          - reject
+          description: KYC decision
+        data:
+          type: object
+          description: Extracted document data fields
+          additionalProperties: true
+        profile:
+          type: string
+          description: KYC Profile ID used
+        customData:
+          type: string
+          description: Custom data stored with the transaction
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        outputImage:
+          type: string
+          description: Processed document image token or URL
+        outputImageBack:
+          type: string
+          description: Processed document back image token or URL
+        warning:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    TransactionListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
+        total:
+          type: integer
+    ExportTransactionResponse:
+      type: object
+      properties:
+        Url:
+          type: string
+          description: Download URL for the exported archive
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

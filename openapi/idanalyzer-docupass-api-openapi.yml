@@ -1,0 +1,292 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account Docupass API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: Docupass
+  description: Hosted KYC verification sessions
+paths:
+  /docupass:
+    get:
+      tags:
+      - Docupass
+      operationId: listDocupass
+      summary: List Docupass sessions
+      description: Retrieve a paginated list of Docupass verification sessions.
+      parameters:
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: List of Docupass sessions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocupassListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+      - Docupass
+      operationId: createDocupass
+      summary: Create Docupass session
+      description: Create a new hosted Docupass identity verification session. Returns a URL that can be shared with the end user to complete their identity verification online or via QR code.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocupassCreateRequest'
+      responses:
+        '200':
+          description: Created Docupass session with verification URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocupassResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /docupass/{reference}:
+    get:
+      tags:
+      - Docupass
+      operationId: getDocupass
+      summary: Get Docupass session
+      description: Retrieve a single Docupass session by reference ID.
+      parameters:
+      - name: reference
+        in: path
+        required: true
+        description: Docupass reference ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Docupass session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocupassResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Docupass
+      operationId: deleteDocupass
+      summary: Delete Docupass session
+      description: Delete a Docupass session by reference ID.
+      parameters:
+      - name: reference
+        in: path
+        required: true
+        description: Docupass reference ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Docupass session deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    DocupassListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocupassResponse'
+        total:
+          type: integer
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    DocupassCreateRequest:
+      type: object
+      required:
+      - profile
+      properties:
+        profile:
+          type: string
+          description: KYC Profile ID to apply to the verification
+        mode:
+          type: integer
+          description: Docupass verification mode
+          default: 0
+        contractFormat:
+          type: string
+          description: Generated contract format
+          enum:
+          - pdf
+          - docx
+          - html
+          default: pdf
+        contractGenerate:
+          type: string
+          description: Contract template ID(s) to auto-generate on completion
+        reusable:
+          type: boolean
+          description: Whether the Docupass link can be reused by multiple users
+          default: false
+        contractPrefill:
+          type: string
+          description: Key-value data used to prefill the generated contract
+        contractSign:
+          type: string
+          description: Contract signing configuration
+        customData:
+          type: string
+          description: Arbitrary string to store alongside the resulting transaction
+        language:
+          type: string
+          description: Display language for the Docupass page (e.g. "en")
+        referenceDocument:
+          type: string
+          description: Reference document front image to verify against
+        referenceDocumentBack:
+          type: string
+          description: Reference document back image to verify against
+        referenceFace:
+          type: string
+          description: Reference face image to verify against
+        userPhone:
+          type: string
+          description: User phone number
+        verifyAddress:
+          type: string
+          description: Address to verify against submitted document
+        verifyAge:
+          type: string
+          description: Age range to verify (e.g. "18-99")
+          pattern: ^\d+-\d+$
+        verifyDOB:
+          type: string
+          description: Date of birth to verify (YYYY/MM/DD)
+          pattern: ^\d{4}/\d{2}/\d{2}$
+        verifyDocumentNumber:
+          type: string
+          description: Document/ID number to verify
+        verifyName:
+          type: string
+          description: Full name to verify
+        verifyPostcode:
+          type: string
+          description: Postcode to verify
+    DocupassResponse:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Docupass session reference ID
+        url:
+          type: string
+          description: Verification URL to share with the end user
+          format: uri
+        qrCode:
+          type: string
+          description: QR code image for the verification URL
+        mode:
+          type: integer
+        profile:
+          type: string
+        reusable:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

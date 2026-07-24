@@ -1,0 +1,374 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account Profile API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: Profile
+  description: KYC profile management
+paths:
+  /profile:
+    get:
+      tags:
+      - Profile
+      operationId: listProfiles
+      summary: List KYC profiles
+      description: Retrieve a paginated list of KYC profiles.
+      parameters:
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: List of KYC profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+      - Profile
+      operationId: createProfile
+      summary: Create KYC profile
+      description: Create a new KYC profile with the specified configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequest'
+      responses:
+        '200':
+          description: Created KYC profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /profile/{profileId}:
+    get:
+      tags:
+      - Profile
+      operationId: getProfile
+      summary: Get KYC profile
+      description: Retrieve a single KYC profile by ID.
+      parameters:
+      - name: profileId
+        in: path
+        required: true
+        description: KYC Profile ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: KYC profile details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+      - Profile
+      operationId: updateProfile
+      summary: Update KYC profile
+      description: Update an existing KYC profile.
+      parameters:
+      - name: profileId
+        in: path
+        required: true
+        description: KYC Profile ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequest'
+      responses:
+        '200':
+          description: Updated KYC profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+      - Profile
+      operationId: deleteProfile
+      summary: Delete KYC profile
+      description: Delete a KYC profile by ID.
+      parameters:
+      - name: profileId
+        in: path
+        required: true
+        description: KYC Profile ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Profile deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /export/profile/{profileId}:
+    get:
+      tags:
+      - Profile
+      operationId: exportProfile
+      summary: Export KYC profile
+      description: Export a KYC profile configuration by ID.
+      parameters:
+      - name: profileId
+        in: path
+        required: true
+        description: KYC Profile ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Exported KYC profile configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ProfileResponse:
+      type: object
+      properties:
+        profileId:
+          type: string
+          description: KYC Profile ID
+        name:
+          type: string
+          description: Profile name
+        config:
+          type: object
+          description: Profile configuration
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    ProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Profile name
+        canvasSize:
+          type: integer
+          description: Maximum canvas dimension in pixels (0=disable)
+        orientationCorrection:
+          type: boolean
+          description: Enable automatic image orientation correction
+        objectDetection:
+          type: boolean
+          description: Enable detection of signature, document, and face locations
+        AAMVABarcodeParsing:
+          type: boolean
+          description: Enable AAMVA barcode parsing for US/CA ID/DL
+        saveResult:
+          type: boolean
+          description: Save scan transaction results to cloud
+        saveImage:
+          type: boolean
+          description: Save output images to cloud
+        outputImage:
+          type: boolean
+          description: Return output image in API response
+        outputType:
+          type: string
+          description: Output image format
+          enum:
+          - url
+          - base64
+          default: url
+        outputSize:
+          type: integer
+          description: Maximum output image dimension in pixels
+        crop:
+          type: boolean
+          description: Automatically crop document from image
+        advancedCrop:
+          type: boolean
+          description: Enable perspective-corrected auto cropping
+        inferFullName:
+          type: boolean
+          description: Infer full name from first, middle, and last name fields
+        splitFirstName:
+          type: boolean
+          description: Split multi-word first name into first and middle name
+        transactionAuditReport:
+          type: boolean
+          description: Generate a PDF audit report for every transaction
+        timezone:
+          type: string
+          description: Timezone for audit reports (TZ database name)
+          default: UTC
+        obscure:
+          type: array
+          description: Data field keys to redact before storage
+          items:
+            type: string
+        webhook:
+          type: string
+          description: Webhook URL for verification result callbacks
+          format: uri
+        thresholds:
+          type: object
+          description: Validation threshold configuration
+          additionalProperties:
+            type: number
+        decisionTrigger:
+          type: object
+          description: Score thresholds that trigger review or reject decisions
+          properties:
+            review:
+              type: number
+            reject:
+              type: number
+        decisions:
+          type: object
+          description: Per-warning configuration for decision scoring
+          additionalProperties:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+              review:
+                type: number
+              reject:
+                type: number
+              weight:
+                type: number
+        acceptedDocuments:
+          type: object
+          description: Document restriction filters
+          properties:
+            documentCountry:
+              type: string
+              description: Comma-separated ISO ALPHA-2 country codes
+            documentState:
+              type: string
+              description: Comma-separated state names or abbreviations
+            documentType:
+              type: string
+              description: Accepted document type codes (P/D/I)
+    ProfileListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileResponse'
+        total:
+          type: integer
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

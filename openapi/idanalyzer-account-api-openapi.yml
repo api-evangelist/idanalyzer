@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: Account
+  description: Account profile and usage
+paths:
+  /myaccount:
+    get:
+      tags:
+      - Account
+      operationId: getAccount
+      summary: Get account profile
+      description: Retrieve the current account's profile, quota, and usage statistics.
+      responses:
+        '200':
+          description: Account profile and usage information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    AccountResponse:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: Account ID
+        email:
+          type: string
+          description: Account email address
+        plan:
+          type: string
+          description: Current subscription plan
+        quota:
+          type: object
+          description: API quota limits
+          properties:
+            monthly:
+              type: integer
+            daily:
+              type: integer
+        usage:
+          type: object
+          description: API usage statistics
+          properties:
+            monthly:
+              type: integer
+            daily:
+              type: integer
+        balance:
+          type: number
+          description: Remaining credit balance
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: ID Analyzer Scanner Account AML API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
+  version: '2.0'
+  contact:
+    name: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+    email: support@idanalyzer.com
+  termsOfService: https://www.idanalyzer.com/en/terms-of-service
+  license:
+    name: Proprietary
+    url: https://www.idanalyzer.com
+servers:
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
+security:
+- ApiKeyHeader: []
+tags:
+- name: AML
+  description: Anti-Money Laundering and sanctions screening
+paths:
+  /aml:
+    post:
+      tags:
+      - AML
+      operationId: amlSearch
+      summary: AML/PEP sanctions screening (v1)
+      description: Search the AML database with a person's name or document number. Searches global sanctions lists, watchlists, and PEP databases to support regulatory compliance obligations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AMLSearchRequest'
+      responses:
+        '200':
+          description: AML search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AMLSearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /amlv3:
+    post:
+      tags:
+      - AML
+      operationId: amlSearchV3
+      summary: AML/PEP sanctions screening (v3)
+      description: Search the AML database using the v3 endpoint with full-text query or entity IDs. Supports paginated results.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AMLSearchV3Request'
+      responses:
+        '200':
+          description: AML v3 search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AMLSearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    AMLSearchResponse:
+      type: object
+      properties:
+        hits:
+          type: array
+          description: Matching AML database entries
+          items:
+            type: object
+            additionalProperties: true
+        total:
+          type: integer
+          description: Total number of matching results
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    AMLSearchV3Request:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Full-text query (name, alias, document/passport/tax/registration number, etc.)
+        id:
+          type: string
+          description: One or more AML entity IDs separated by comma or newline (max 50)
+        limit:
+          type: integer
+          description: Number of results per page (0 uses API default)
+          default: 0
+        page:
+          type: integer
+          description: Result page number (0 uses API default)
+          default: 0
+    AMLSearchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Person or business name to search
+        idNumber:
+          type: string
+          description: Document number to search
+        entity:
+          type: integer
+          description: Entity type (0=Person, 1=Corporation/Legal Entity)
+          enum:
+          - 0
+          - 1
+          default: 0
+        country:
+          type: string
+          description: Two-digit ISO country code to filter by
+          maxLength: 2
+        database:
+          type: array
+          description: Specific databases to search (searches all if omitted)
+          items:
+            type: string
+          example:
+          - us_ofac
+          - eu_fsf
+        birthYear:
+          type: string
+          description: Filter by year of birth
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com

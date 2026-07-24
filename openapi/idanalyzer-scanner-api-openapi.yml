@@ -1,13 +1,7 @@
 openapi: 3.0.3
 info:
-  title: ID Analyzer Scanner API
-  description: >-
-    REST API for scanning and performing OCR on government-issued identity
-    documents including passports, driver licenses, and national ID cards from
-    190+ countries. Extracts structured data fields, performs anti-forgery
-    analysis with 20+ fraud detection models, and validates MRZ codes,
-    holograms, and watermarks. Supports full KYC scan with biometric face
-    verification, quick OCR scan, and very-quick OCR scan variants.
+  title: ID Analyzer Account Scanner API
+  description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
   version: '2.0'
   contact:
     name: ID Analyzer Support
@@ -17,48 +11,24 @@ info:
   license:
     name: Proprietary
     url: https://www.idanalyzer.com
-
 servers:
-  - url: https://api2.idanalyzer.com
-    description: US Region
-  - url: https://api2-eu.idanalyzer.com
-    description: EU Region
-
+- url: https://api2.idanalyzer.com
+  description: US Region
+- url: https://api2-eu.idanalyzer.com
+  description: EU Region
 security:
-  - ApiKeyHeader: []
-
+- ApiKeyHeader: []
 tags:
-  - name: Scanner
-    description: Document scanning and OCR operations
-  - name: Biometric
-    description: Face matching and liveness detection
-  - name: AML
-    description: Anti-Money Laundering and sanctions screening
-  - name: Contract
-    description: Contract template management and document generation
-  - name: Transaction
-    description: Transaction record management and export
-  - name: Docupass
-    description: Hosted KYC verification sessions
-  - name: Profile
-    description: KYC profile management
-  - name: Webhook
-    description: Webhook delivery log management
-  - name: Account
-    description: Account profile and usage
-
+- name: Scanner
+  description: Document scanning and OCR operations
 paths:
   /scan:
     post:
       tags:
-        - Scanner
+      - Scanner
       operationId: scan
       summary: Full KYC document scan
-      description: >-
-        Initiate a new identity document scan and ID face verification
-        transaction by providing input images. Performs OCR extraction,
-        anti-forgery analysis, biometric face match, and produces a KYC
-        decision (accept/review/reject). Requires a KYC profile to be specified.
+      description: Initiate a new identity document scan and ID face verification transaction by providing input images. Performs OCR extraction, anti-forgery analysis, biometric face match, and produces a KYC decision (accept/review/reject). Requires a KYC profile to be specified.
       requestBody:
         required: true
         content:
@@ -78,17 +48,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '429':
           $ref: '#/components/responses/RateLimited'
-
   /quickscan:
     post:
       tags:
-        - Scanner
+      - Scanner
       operationId: quickScan
       summary: Quick OCR document scan
-      description: >-
-        Initiate a quick identity document OCR scan by providing input images.
-        Returns extracted document data without full fraud analysis. Optionally
-        caches images for 24 hours for subsequent full scans.
+      description: Initiate a quick identity document OCR scan by providing input images. Returns extracted document data without full fraud analysis. Optionally caches images for 24 hours for subsequent full scans.
       requestBody:
         required: true
         content:
@@ -106,17 +72,13 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-
   /veryquickscan:
     post:
       tags:
-        - Scanner
+      - Scanner
       operationId: veryQuickScan
       summary: Very quick OCR document scan
-      description: >-
-        Initiate a very quick (fast) identity document OCR scan. Faster but
-        less thorough than quickScan, useful for high-throughput OCR-only use
-        cases. Optionally caches images for 24 hours.
+      description: Initiate a very quick (fast) identity document OCR scan. Faster but less thorough than quickScan, useful for high-throughput OCR-only use cases. Optionally caches images for 24 hours.
       requestBody:
         required: true
         content:
@@ -134,964 +96,51 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-
-  /face:
-    post:
-      tags:
-        - Biometric
-      operationId: verifyFace
-      summary: 1:1 face verification
-      description: >-
-        Perform 1:1 face verification using a selfie photo or video against a
-        reference face image (e.g. the photo on an ID document). Includes
-        passive liveness detection to prevent spoofing attacks.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FaceVerifyRequest'
-      responses:
-        '200':
-          description: Face verification result with match score and liveness status
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BiometricResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /liveness:
-    post:
-      tags:
-        - Biometric
-      operationId: verifyLiveness
-      summary: Standalone liveness check
-      description: >-
-        Perform a standalone liveness check on a selfie photo or video without
-        comparing to a reference image. Detects presentation attacks including
-        photos, videos, masks, and deepfakes.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LivenessRequest'
-      responses:
-        '200':
-          description: Liveness check result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BiometricResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /aml:
-    post:
-      tags:
-        - AML
-      operationId: amlSearch
-      summary: AML/PEP sanctions screening (v1)
-      description: >-
-        Search the AML database with a person's name or document number.
-        Searches global sanctions lists, watchlists, and PEP databases to
-        support regulatory compliance obligations.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AMLSearchRequest'
-      responses:
-        '200':
-          description: AML search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AMLSearchResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /amlv3:
-    post:
-      tags:
-        - AML
-      operationId: amlSearchV3
-      summary: AML/PEP sanctions screening (v3)
-      description: >-
-        Search the AML database using the v3 endpoint with full-text query
-        or entity IDs. Supports paginated results.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AMLSearchV3Request'
-      responses:
-        '200':
-          description: AML v3 search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AMLSearchResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /generate:
-    post:
-      tags:
-        - Contract
-      operationId: generateContract
-      summary: Generate contract document
-      description: >-
-        Generate a contract document using a template and optionally populate
-        it with data from a transaction. Supports PDF, DOCX, and HTML output
-        formats.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ContractGenerateRequest'
-      responses:
-        '200':
-          description: Generated contract document
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContractGenerateResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /contract:
-    get:
-      tags:
-        - Contract
-      operationId: listTemplates
-      summary: List contract templates
-      description: Retrieve a paginated list of contract templates.
-      parameters:
-        - $ref: '#/components/parameters/order'
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/offset'
-        - name: templateId
-          in: query
-          description: Filter result by template ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of contract templates
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      tags:
-        - Contract
-      operationId: createTemplate
-      summary: Create contract template
-      description: Create a new contract template with HTML content.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreateRequest'
-      responses:
-        '200':
-          description: Created contract template
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /contract/{templateId}:
-    get:
-      tags:
-        - Contract
-      operationId: getTemplate
-      summary: Get contract template
-      description: Retrieve a single contract template by ID.
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          description: Template ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Contract template details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    post:
-      tags:
-        - Contract
-      operationId: updateTemplate
-      summary: Update contract template
-      description: Update an existing contract template.
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          description: Template ID
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateCreateRequest'
-      responses:
-        '200':
-          description: Updated contract template
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TemplateResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags:
-        - Contract
-      operationId: deleteTemplate
-      summary: Delete contract template
-      description: Delete a contract template by ID.
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          description: Template ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Template deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /transaction:
-    get:
-      tags:
-        - Transaction
-      operationId: listTransactions
-      summary: List transactions
-      description: >-
-        Retrieve a paginated list of identity verification transaction history
-        with optional filtering by date range, decision, Docupass reference,
-        custom data, and profile ID.
-      parameters:
-        - $ref: '#/components/parameters/order'
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/offset'
-        - name: createdAtMin
-          in: query
-          description: List transactions created after this UNIX timestamp
-          schema:
-            type: integer
-            format: int64
-        - name: createdAtMax
-          in: query
-          description: List transactions created before this UNIX timestamp
-          schema:
-            type: integer
-            format: int64
-        - name: customData
-          in: query
-          description: Filter by customData field
-          schema:
-            type: string
-        - name: decision
-          in: query
-          description: Filter by decision
-          schema:
-            type: string
-            enum: [accept, review, reject]
-        - name: docupass
-          in: query
-          description: Filter by Docupass reference
-          schema:
-            type: string
-        - name: profileId
-          in: query
-          description: Filter by KYC Profile ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of transactions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /transaction/{transactionId}:
-    get:
-      tags:
-        - Transaction
-      operationId: getTransaction
-      summary: Get transaction
-      description: Retrieve a single identity verification transaction record by ID.
-      parameters:
-        - name: transactionId
-          in: path
-          required: true
-          description: Transaction ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Transaction record
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    patch:
-      tags:
-        - Transaction
-      operationId: updateTransaction
-      summary: Update transaction decision
-      description: >-
-        Update the decision on a transaction record. The updated decision will
-        be relayed to the configured webhook.
-      parameters:
-        - name: transactionId
-          in: path
-          required: true
-          description: Transaction ID
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - decision
-              properties:
-                decision:
-                  type: string
-                  enum: [accept, review, reject]
-                  description: New decision for the transaction
-      responses:
-        '200':
-          description: Transaction updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags:
-        - Transaction
-      operationId: deleteTransaction
-      summary: Delete transaction
-      description: Delete a transaction record by ID.
-      parameters:
-        - name: transactionId
-          in: path
-          required: true
-          description: Transaction ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Transaction deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /imagevault/{imageToken}:
-    get:
-      tags:
-        - Transaction
-      operationId: getTransactionImage
-      summary: Download transaction image
-      description: Download a transaction image using the image token from the transaction response.
-      parameters:
-        - name: imageToken
-          in: path
-          required: true
-          description: Image token from transaction API response
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Image file stream
-          content:
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /filevault/{fileName}:
-    get:
-      tags:
-        - Transaction
-      operationId: getTransactionFile
-      summary: Download transaction file
-      description: Download a transaction file (e.g. PDF audit report) using the secured file name.
-      parameters:
-        - name: fileName
-          in: path
-          required: true
-          description: Secured file name from transaction response
-          schema:
-            type: string
-      responses:
-        '200':
-          description: File stream
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /export/transaction:
-    post:
-      tags:
-        - Transaction
-      operationId: exportTransactions
-      summary: Export transaction archive
-      description: >-
-        Export transaction records as a CSV or JSON archive file. Supports
-        filtering by date range, decision, Docupass reference, custom data,
-        and profile ID.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExportTransactionRequest'
-      responses:
-        '200':
-          description: Export URL or archive data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExportTransactionResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /docupass:
-    get:
-      tags:
-        - Docupass
-      operationId: listDocupass
-      summary: List Docupass sessions
-      description: Retrieve a paginated list of Docupass verification sessions.
-      parameters:
-        - $ref: '#/components/parameters/order'
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/offset'
-      responses:
-        '200':
-          description: List of Docupass sessions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocupassListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      tags:
-        - Docupass
-      operationId: createDocupass
-      summary: Create Docupass session
-      description: >-
-        Create a new hosted Docupass identity verification session. Returns a
-        URL that can be shared with the end user to complete their identity
-        verification online or via QR code.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DocupassCreateRequest'
-      responses:
-        '200':
-          description: Created Docupass session with verification URL
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocupassResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /docupass/{reference}:
-    get:
-      tags:
-        - Docupass
-      operationId: getDocupass
-      summary: Get Docupass session
-      description: Retrieve a single Docupass session by reference ID.
-      parameters:
-        - name: reference
-          in: path
-          required: true
-          description: Docupass reference ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Docupass session details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocupassResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags:
-        - Docupass
-      operationId: deleteDocupass
-      summary: Delete Docupass session
-      description: Delete a Docupass session by reference ID.
-      parameters:
-        - name: reference
-          in: path
-          required: true
-          description: Docupass reference ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Docupass session deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /profile:
-    get:
-      tags:
-        - Profile
-      operationId: listProfiles
-      summary: List KYC profiles
-      description: Retrieve a paginated list of KYC profiles.
-      parameters:
-        - $ref: '#/components/parameters/order'
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/offset'
-      responses:
-        '200':
-          description: List of KYC profiles
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProfileListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      tags:
-        - Profile
-      operationId: createProfile
-      summary: Create KYC profile
-      description: Create a new KYC profile with the specified configuration.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProfileRequest'
-      responses:
-        '200':
-          description: Created KYC profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProfileResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /profile/{profileId}:
-    get:
-      tags:
-        - Profile
-      operationId: getProfile
-      summary: Get KYC profile
-      description: Retrieve a single KYC profile by ID.
-      parameters:
-        - name: profileId
-          in: path
-          required: true
-          description: KYC Profile ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: KYC profile details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProfileResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      tags:
-        - Profile
-      operationId: updateProfile
-      summary: Update KYC profile
-      description: Update an existing KYC profile.
-      parameters:
-        - name: profileId
-          in: path
-          required: true
-          description: KYC Profile ID
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProfileRequest'
-      responses:
-        '200':
-          description: Updated KYC profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProfileResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags:
-        - Profile
-      operationId: deleteProfile
-      summary: Delete KYC profile
-      description: Delete a KYC profile by ID.
-      parameters:
-        - name: profileId
-          in: path
-          required: true
-          description: KYC Profile ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Profile deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /export/profile/{profileId}:
-    get:
-      tags:
-        - Profile
-      operationId: exportProfile
-      summary: Export KYC profile
-      description: Export a KYC profile configuration by ID.
-      parameters:
-        - name: profileId
-          in: path
-          required: true
-          description: KYC Profile ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Exported KYC profile configuration
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProfileResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /webhook:
-    get:
-      tags:
-        - Webhook
-      operationId: listWebhooks
-      summary: List webhook delivery logs
-      description: >-
-        Retrieve a paginated list of webhook delivery logs with optional
-        filtering by event type, success status, and date range.
-      parameters:
-        - $ref: '#/components/parameters/order'
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/offset'
-        - name: event
-          in: query
-          description: Filter by event type
-          schema:
-            type: string
-        - name: success
-          in: query
-          description: Filter by delivery success (1=success, 0=failure)
-          schema:
-            type: integer
-            enum: [0, 1]
-        - name: createdAtMin
-          in: query
-          description: Filter deliveries created after this timestamp
-          schema:
-            type: string
-        - name: createdAtMax
-          in: query
-          description: Filter deliveries created before this timestamp
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of webhook delivery logs
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WebhookListResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /webhook/{webhookId}:
-    post:
-      tags:
-        - Webhook
-      operationId: resendWebhook
-      summary: Resend webhook delivery
-      description: Resend a webhook delivery by ID.
-      parameters:
-        - name: webhookId
-          in: path
-          required: true
-          description: Webhook delivery ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Webhook resent
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags:
-        - Webhook
-      operationId: deleteWebhook
-      summary: Delete webhook delivery log
-      description: Delete a webhook delivery log by ID.
-      parameters:
-        - name: webhookId
-          in: path
-          required: true
-          description: Webhook delivery ID
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Webhook delivery log deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /myaccount:
-    get:
-      tags:
-        - Account
-      operationId: getAccount
-      summary: Get account profile
-      description: Retrieve the current account's profile, quota, and usage statistics.
-      responses:
-        '200':
-          description: Account profile and usage information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
 components:
-  securitySchemes:
-    ApiKeyHeader:
-      type: apiKey
-      in: header
-      name: X-Api-Key
-      description: API key obtained from portal2.idanalyzer.com
-
-  parameters:
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum: [-1, 1]
-        default: -1
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-
+  responses:
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    ScanRequest:
+    QuickScanRequest:
       type: object
       required:
-        - document
-        - profile
+      - document
       properties:
         document:
           type: string
-          description: >-
-            Front of document image. Accepts a file path, base64-encoded image
-            content, URL, or cache reference (ref:...).
+          description: Front of document image (file path, base64, or URL)
         documentBack:
           type: string
-          description: Back of document image (file path, base64, URL, or cache reference)
-        face:
-          type: string
-          description: Selfie face photo (file path, base64, URL, or cache reference)
-        faceVideo:
-          type: string
-          description: Selfie face video (file path, base64, or URL). Used if face is empty.
-        profile:
-          type: string
-          description: >-
-            KYC Profile ID or preset profile name
-            (security_none, security_low, security_medium, security_high)
-          example: security_medium
-        profileOverride:
-          type: object
-          description: Per-request overrides applied on top of the specified profile
-          additionalProperties: true
-        verifyName:
-          type: string
-          description: Full name to verify against the document
-        verifyDob:
-          type: string
-          description: Date of birth to verify (YYYY/MM/DD)
-          pattern: '^\d{4}/\d{2}/\d{2}$'
-        verifyAge:
-          type: string
-          description: Age range to verify (e.g. "18-40")
-          pattern: '^\d+-\d+$'
-        verifyAddress:
-          type: string
-          description: Address to verify against the document
-        verifyPostcode:
-          type: string
-          description: Postcode to verify against the document
-        verifyDocumentNumber:
-          type: string
-          description: Document or ID number to verify
-        restrictCountry:
-          type: string
-          description: >-
-            Comma-separated ISO ALPHA-2 country codes. Only accept documents
-            from these countries (e.g. "US,CA,UK")
-        restrictState:
-          type: string
-          description: >-
-            Comma-separated state names or abbreviations. Only accept documents
-            from these states (e.g. "CA,TX")
-        restrictType:
-          type: string
-          description: >-
-            Accepted document types: P=Passport, D=Driver's License,
-            I=Identity Card (e.g. "DIP" for all three)
-        contractGenerate:
-          type: string
-          description: Up to 5 contract template IDs (comma-separated) for auto-generation
-        contractFormat:
-          type: string
-          description: Contract output format
-          enum: [PDF, DOCX, HTML]
-          default: PDF
-        contractPrefill:
-          type: object
-          description: Key-value pairs to prefill contract template dynamic fields
-          additionalProperties: true
-        ip:
-          type: string
-          description: User IP address for country cross-check
-        customData:
-          type: string
-          description: Arbitrary string to store alongside the transaction
-        client:
-          type: string
-          description: Client library identifier (set automatically by SDKs)
-
+          description: Back of document image (file path, base64, or URL)
+        saveFile:
+          type: boolean
+          description: Cache uploaded images for 24 hours and return a cache reference
+          default: false
     ScanResponse:
       type: object
       properties:
         decision:
           type: string
-          enum: [accept, review, reject]
+          enum:
+          - accept
+          - review
+          - reject
           description: Final KYC decision
         transactionId:
           type: string
@@ -1128,23 +177,6 @@ components:
               type: string
         error:
           $ref: '#/components/schemas/ErrorObject'
-
-    QuickScanRequest:
-      type: object
-      required:
-        - document
-      properties:
-        document:
-          type: string
-          description: Front of document image (file path, base64, or URL)
-        documentBack:
-          type: string
-          description: Back of document image (file path, base64, or URL)
-        saveFile:
-          type: boolean
-          description: Cache uploaded images for 24 hours and return a cache reference
-          default: false
-
     QuickScanResponse:
       type: object
       properties:
@@ -1162,646 +194,6 @@ components:
               type: string
         error:
           $ref: '#/components/schemas/ErrorObject'
-
-    FaceVerifyRequest:
-      type: object
-      required:
-        - reference
-        - profile
-      properties:
-        reference:
-          type: string
-          description: Reference face image (ID document photo, file path, base64, URL, or cache ref)
-        face:
-          type: string
-          description: Selfie face photo (file path, base64, URL, or cache reference)
-        faceVideo:
-          type: string
-          description: Selfie face video (file path, base64, or URL). Used if face is empty.
-        profile:
-          type: string
-          description: KYC Profile ID or preset profile name
-        profileOverride:
-          type: object
-          description: Per-request overrides applied on top of the specified profile
-          additionalProperties: true
-        customData:
-          type: string
-          description: Arbitrary string to store alongside the transaction
-
-    LivenessRequest:
-      type: object
-      required:
-        - profile
-      properties:
-        face:
-          type: string
-          description: Selfie face photo (file path, base64, URL, or cache reference)
-        faceVideo:
-          type: string
-          description: Selfie face video (file path, base64, or URL). Used if face is empty.
-        profile:
-          type: string
-          description: KYC Profile ID or preset profile name
-        profileOverride:
-          type: object
-          description: Per-request overrides applied on top of the specified profile
-          additionalProperties: true
-        customData:
-          type: string
-          description: Arbitrary string to store alongside the transaction
-
-    BiometricResponse:
-      type: object
-      properties:
-        decision:
-          type: string
-          enum: [accept, review, reject]
-          description: Biometric verification decision
-        transactionId:
-          type: string
-          description: Unique transaction identifier
-        confidence:
-          type: number
-          description: Face match confidence score (0-1)
-        liveness:
-          type: object
-          description: Liveness check result
-          properties:
-            decision:
-              type: string
-            confidence:
-              type: number
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-
-    AMLSearchRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Person or business name to search
-        idNumber:
-          type: string
-          description: Document number to search
-        entity:
-          type: integer
-          description: Entity type (0=Person, 1=Corporation/Legal Entity)
-          enum: [0, 1]
-          default: 0
-        country:
-          type: string
-          description: Two-digit ISO country code to filter by
-          maxLength: 2
-        database:
-          type: array
-          description: Specific databases to search (searches all if omitted)
-          items:
-            type: string
-          example: [us_ofac, eu_fsf]
-        birthYear:
-          type: string
-          description: Filter by year of birth
-
-    AMLSearchV3Request:
-      type: object
-      properties:
-        text:
-          type: string
-          description: >-
-            Full-text query (name, alias, document/passport/tax/registration
-            number, etc.)
-        id:
-          type: string
-          description: >-
-            One or more AML entity IDs separated by comma or newline (max 50)
-        limit:
-          type: integer
-          description: Number of results per page (0 uses API default)
-          default: 0
-        page:
-          type: integer
-          description: Result page number (0 uses API default)
-          default: 0
-
-    AMLSearchResponse:
-      type: object
-      properties:
-        hits:
-          type: array
-          description: Matching AML database entries
-          items:
-            type: object
-            additionalProperties: true
-        total:
-          type: integer
-          description: Total number of matching results
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-
-    ContractGenerateRequest:
-      type: object
-      required:
-        - templateId
-      properties:
-        templateId:
-          type: string
-          description: Contract template ID
-        format:
-          type: string
-          description: Output format
-          enum: [PDF, DOCX, HTML]
-          default: PDF
-        transactionId:
-          type: string
-          description: Fill template with data from this transaction ID
-        fillData:
-          type: object
-          description: Key-value pairs to autofill template dynamic fields
-          additionalProperties: true
-
-    ContractGenerateResponse:
-      type: object
-      properties:
-        document:
-          type: string
-          description: Base64-encoded generated document or download URL
-        format:
-          type: string
-          description: Output format used
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-
-    TemplateCreateRequest:
-      type: object
-      required:
-        - name
-        - content
-      properties:
-        name:
-          type: string
-          description: Template name
-        content:
-          type: string
-          description: Template HTML content
-        orientation:
-          type: string
-          description: Page orientation (0=Portrait, 1=Landscape)
-          enum: ['0', '1']
-          default: '0'
-        timezone:
-          type: string
-          description: Template timezone (TZ database name)
-          default: UTC
-          example: America/New_York
-        font:
-          type: string
-          description: Template font
-          default: Open Sans
-
-    TemplateResponse:
-      type: object
-      properties:
-        templateId:
-          type: string
-          description: Template ID
-        name:
-          type: string
-          description: Template name
-        content:
-          type: string
-          description: Template HTML content
-        orientation:
-          type: string
-        timezone:
-          type: string
-        font:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-
-    TemplateListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateResponse'
-        total:
-          type: integer
-
-    TransactionResponse:
-      type: object
-      properties:
-        transactionId:
-          type: string
-          description: Unique transaction identifier
-        decision:
-          type: string
-          enum: [accept, review, reject]
-          description: KYC decision
-        data:
-          type: object
-          description: Extracted document data fields
-          additionalProperties: true
-        profile:
-          type: string
-          description: KYC Profile ID used
-        customData:
-          type: string
-          description: Custom data stored with the transaction
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        outputImage:
-          type: string
-          description: Processed document image token or URL
-        outputImageBack:
-          type: string
-          description: Processed document back image token or URL
-        warning:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-
-    TransactionListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionResponse'
-        total:
-          type: integer
-
-    ExportTransactionRequest:
-      type: object
-      properties:
-        exportType:
-          type: string
-          description: Export format
-          enum: [csv, json]
-          default: csv
-        transactionId:
-          type: array
-          description: Export only these transaction IDs (exports all if omitted)
-          items:
-            type: string
-        ignoreUnrecognized:
-          type: boolean
-          description: Exclude unrecognized documents from export
-          default: false
-        ignoreDuplicate:
-          type: boolean
-          description: Exclude duplicate entries from export
-          default: false
-        createdAtMin:
-          type: integer
-          format: int64
-          description: Export transactions created after this UNIX timestamp
-        createdAtMax:
-          type: integer
-          format: int64
-          description: Export transactions created before this UNIX timestamp
-        customData:
-          type: string
-          description: Filter export by customData field
-        decision:
-          type: string
-          enum: [accept, review, reject]
-          description: Filter export by decision
-        docupass:
-          type: string
-          description: Filter export by Docupass reference
-        profileId:
-          type: string
-          description: Filter export by KYC Profile ID
-
-    ExportTransactionResponse:
-      type: object
-      properties:
-        Url:
-          type: string
-          description: Download URL for the exported archive
-
-    DocupassCreateRequest:
-      type: object
-      required:
-        - profile
-      properties:
-        profile:
-          type: string
-          description: KYC Profile ID to apply to the verification
-        mode:
-          type: integer
-          description: Docupass verification mode
-          default: 0
-        contractFormat:
-          type: string
-          description: Generated contract format
-          enum: [pdf, docx, html]
-          default: pdf
-        contractGenerate:
-          type: string
-          description: Contract template ID(s) to auto-generate on completion
-        reusable:
-          type: boolean
-          description: Whether the Docupass link can be reused by multiple users
-          default: false
-        contractPrefill:
-          type: string
-          description: Key-value data used to prefill the generated contract
-        contractSign:
-          type: string
-          description: Contract signing configuration
-        customData:
-          type: string
-          description: Arbitrary string to store alongside the resulting transaction
-        language:
-          type: string
-          description: Display language for the Docupass page (e.g. "en")
-        referenceDocument:
-          type: string
-          description: Reference document front image to verify against
-        referenceDocumentBack:
-          type: string
-          description: Reference document back image to verify against
-        referenceFace:
-          type: string
-          description: Reference face image to verify against
-        userPhone:
-          type: string
-          description: User phone number
-        verifyAddress:
-          type: string
-          description: Address to verify against submitted document
-        verifyAge:
-          type: string
-          description: Age range to verify (e.g. "18-99")
-          pattern: '^\d+-\d+$'
-        verifyDOB:
-          type: string
-          description: Date of birth to verify (YYYY/MM/DD)
-          pattern: '^\d{4}/\d{2}/\d{2}$'
-        verifyDocumentNumber:
-          type: string
-          description: Document/ID number to verify
-        verifyName:
-          type: string
-          description: Full name to verify
-        verifyPostcode:
-          type: string
-          description: Postcode to verify
-
-    DocupassResponse:
-      type: object
-      properties:
-        reference:
-          type: string
-          description: Docupass session reference ID
-        url:
-          type: string
-          description: Verification URL to share with the end user
-          format: uri
-        qrCode:
-          type: string
-          description: QR code image for the verification URL
-        mode:
-          type: integer
-        profile:
-          type: string
-        reusable:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-
-    DocupassListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocupassResponse'
-        total:
-          type: integer
-
-    ProfileRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Profile name
-        canvasSize:
-          type: integer
-          description: Maximum canvas dimension in pixels (0=disable)
-        orientationCorrection:
-          type: boolean
-          description: Enable automatic image orientation correction
-        objectDetection:
-          type: boolean
-          description: Enable detection of signature, document, and face locations
-        AAMVABarcodeParsing:
-          type: boolean
-          description: Enable AAMVA barcode parsing for US/CA ID/DL
-        saveResult:
-          type: boolean
-          description: Save scan transaction results to cloud
-        saveImage:
-          type: boolean
-          description: Save output images to cloud
-        outputImage:
-          type: boolean
-          description: Return output image in API response
-        outputType:
-          type: string
-          description: Output image format
-          enum: [url, base64]
-          default: url
-        outputSize:
-          type: integer
-          description: Maximum output image dimension in pixels
-        crop:
-          type: boolean
-          description: Automatically crop document from image
-        advancedCrop:
-          type: boolean
-          description: Enable perspective-corrected auto cropping
-        inferFullName:
-          type: boolean
-          description: Infer full name from first, middle, and last name fields
-        splitFirstName:
-          type: boolean
-          description: Split multi-word first name into first and middle name
-        transactionAuditReport:
-          type: boolean
-          description: Generate a PDF audit report for every transaction
-        timezone:
-          type: string
-          description: Timezone for audit reports (TZ database name)
-          default: UTC
-        obscure:
-          type: array
-          description: Data field keys to redact before storage
-          items:
-            type: string
-        webhook:
-          type: string
-          description: Webhook URL for verification result callbacks
-          format: uri
-        thresholds:
-          type: object
-          description: Validation threshold configuration
-          additionalProperties:
-            type: number
-        decisionTrigger:
-          type: object
-          description: Score thresholds that trigger review or reject decisions
-          properties:
-            review:
-              type: number
-            reject:
-              type: number
-        decisions:
-          type: object
-          description: Per-warning configuration for decision scoring
-          additionalProperties:
-            type: object
-            properties:
-              enabled:
-                type: boolean
-              review:
-                type: number
-              reject:
-                type: number
-              weight:
-                type: number
-        acceptedDocuments:
-          type: object
-          description: Document restriction filters
-          properties:
-            documentCountry:
-              type: string
-              description: Comma-separated ISO ALPHA-2 country codes
-            documentState:
-              type: string
-              description: Comma-separated state names or abbreviations
-            documentType:
-              type: string
-              description: Accepted document type codes (P/D/I)
-
-    ProfileResponse:
-      type: object
-      properties:
-        profileId:
-          type: string
-          description: KYC Profile ID
-        name:
-          type: string
-          description: Profile name
-        config:
-          type: object
-          description: Profile configuration
-          additionalProperties: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-
-    ProfileListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProfileResponse'
-        total:
-          type: integer
-
-    WebhookDelivery:
-      type: object
-      properties:
-        webhookId:
-          type: string
-          description: Webhook delivery ID
-        event:
-          type: string
-          description: Event type that triggered the webhook
-        url:
-          type: string
-          description: Webhook destination URL
-        success:
-          type: boolean
-          description: Whether the delivery was successful
-        statusCode:
-          type: integer
-          description: HTTP response status code from the webhook endpoint
-        createdAt:
-          type: string
-          format: date-time
-
-    WebhookListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookDelivery'
-        total:
-          type: integer
-
-    AccountResponse:
-      type: object
-      properties:
-        accountId:
-          type: string
-          description: Account ID
-        email:
-          type: string
-          description: Account email address
-        plan:
-          type: string
-          description: Current subscription plan
-        quota:
-          type: object
-          description: API quota limits
-          properties:
-            monthly:
-              type: integer
-            daily:
-              type: integer
-        usage:
-          type: object
-          description: API usage statistics
-          properties:
-            monthly:
-              type: integer
-            daily:
-              type: integer
-        balance:
-          type: number
-          description: Remaining credit balance
-
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
-
     ErrorObject:
       type: object
       properties:
@@ -1811,35 +203,93 @@ components:
         message:
           type: string
           description: Human-readable error message
-
     ErrorResponse:
       type: object
       properties:
         error:
           $ref: '#/components/schemas/ErrorObject'
-
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RateLimited:
-      description: Rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    ScanRequest:
+      type: object
+      required:
+      - document
+      - profile
+      properties:
+        document:
+          type: string
+          description: Front of document image. Accepts a file path, base64-encoded image content, URL, or cache reference (ref:...).
+        documentBack:
+          type: string
+          description: Back of document image (file path, base64, URL, or cache reference)
+        face:
+          type: string
+          description: Selfie face photo (file path, base64, URL, or cache reference)
+        faceVideo:
+          type: string
+          description: Selfie face video (file path, base64, or URL). Used if face is empty.
+        profile:
+          type: string
+          description: KYC Profile ID or preset profile name (security_none, security_low, security_medium, security_high)
+          example: security_medium
+        profileOverride:
+          type: object
+          description: Per-request overrides applied on top of the specified profile
+          additionalProperties: true
+        verifyName:
+          type: string
+          description: Full name to verify against the document
+        verifyDob:
+          type: string
+          description: Date of birth to verify (YYYY/MM/DD)
+          pattern: ^\d{4}/\d{2}/\d{2}$
+        verifyAge:
+          type: string
+          description: Age range to verify (e.g. "18-40")
+          pattern: ^\d+-\d+$
+        verifyAddress:
+          type: string
+          description: Address to verify against the document
+        verifyPostcode:
+          type: string
+          description: Postcode to verify against the document
+        verifyDocumentNumber:
+          type: string
+          description: Document or ID number to verify
+        restrictCountry:
+          type: string
+          description: Comma-separated ISO ALPHA-2 country codes. Only accept documents from these countries (e.g. "US,CA,UK")
+        restrictState:
+          type: string
+          description: Comma-separated state names or abbreviations. Only accept documents from these states (e.g. "CA,TX")
+        restrictType:
+          type: string
+          description: 'Accepted document types: P=Passport, D=Driver''s License, I=Identity Card (e.g. "DIP" for all three)'
+        contractGenerate:
+          type: string
+          description: Up to 5 contract template IDs (comma-separated) for auto-generation
+        contractFormat:
+          type: string
+          description: Contract output format
+          enum:
+          - PDF
+          - DOCX
+          - HTML
+          default: PDF
+        contractPrefill:
+          type: object
+          description: Key-value pairs to prefill contract template dynamic fields
+          additionalProperties: true
+        ip:
+          type: string
+          description: User IP address for country cross-check
+        customData:
+          type: string
+          description: Arbitrary string to store alongside the transaction
+        client:
+          type: string
+          description: Client library identifier (set automatically by SDKs)
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key obtained from portal2.idanalyzer.com
