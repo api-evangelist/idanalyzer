@@ -9,7 +9,20 @@ description: >-
   The platform is ISO 27001 certified and compliant with GDPR, HIPAA, and
   NIST IAL2 standards.
 type: Index
-image: >-
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: true
+  try_now: true
+  public: false
+  label: Freemium (free trial) · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/idanalyzer.png
   https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: >-
   https://raw.githubusercontent.com/api-evangelist/idanalyzer/refs/heads/main/apis.yml
@@ -28,112 +41,189 @@ tags:
   - Driver License
   - Liveness Detection
 apis:
-  - aid: idanalyzer:scanner-api
-    name: ID Analyzer Scanner API
-    description: >-
-      REST API for scanning and performing OCR on government-issued identity
-      documents including passports, driver licenses, and national ID cards from
-      190+ countries. Extracts structured data fields, performs anti-forgery
-      analysis with 20+ fraud detection models, and validates MRZ codes,
-      holograms, and watermarks.
-    humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
-    baseURL: https://api2.idanalyzer.com
-    tags:
-      - Document Scanning
-      - OCR
-      - Fraud Detection
-      - Identity Documents
-    properties:
-      - type: Documentation
-        url: https://developer.idanalyzer.com/docs/about-id-analyzer
-      - type: OpenAPI
-        url: https://developer.idanalyzer.com
-    contact:
-      - FN: ID Analyzer Support
-        url: https://www.idanalyzer.com/contact-us
-
-  - aid: idanalyzer:biometric-api
-    name: ID Analyzer Biometric API
-    description: >-
-      REST API for 1:1 face matching between an identity document photo and a
-      live selfie or uploaded image. Includes passive liveness detection to
-      prevent spoofing with photos, videos, or masks, and deepfake detection
-      capabilities.
-    humanURL: https://developer.idanalyzer.com
-    baseURL: https://api2.idanalyzer.com
-    tags:
-      - Biometrics
-      - Face Matching
-      - Liveness Detection
-      - Deepfake Detection
-    properties:
-      - type: Documentation
-        url: https://developer.idanalyzer.com
-    contact:
-      - FN: ID Analyzer Support
-        url: https://www.idanalyzer.com/contact-us
-
-  - aid: idanalyzer:aml-api
-    name: ID Analyzer AML Screening API
-    description: >-
-      REST API for Anti-Money Laundering (AML) and Politically Exposed Persons
-      (PEP) screening. Searches global sanctions lists, watchlists, and PEP
-      databases to support regulatory compliance obligations.
-    humanURL: https://developer.idanalyzer.com
-    baseURL: https://api2.idanalyzer.com
-    tags:
-      - AML
-      - PEP
-      - Sanctions Screening
-      - Compliance
-    properties:
-      - type: Documentation
-        url: https://developer.idanalyzer.com
-    contact:
-      - FN: ID Analyzer Support
-        url: https://www.idanalyzer.com/contact-us
-
-  - aid: idanalyzer:docupass-api
-    name: ID Analyzer DocuPass API
-    description: >-
-      Hosted drop-in KYC verification flow with embedded pages and QR code
-      support. Enables businesses to launch a fully branded identity
-      verification experience without building a front-end, with webhook
-      callbacks on completion.
-    humanURL: https://developer.idanalyzer.com/docs/docupass-identity-verification
-    baseURL: https://api2.idanalyzer.com
-    tags:
-      - KYC
-      - Hosted Verification
-      - DocuPass
-      - Onboarding
-    properties:
-      - type: Documentation
-        url: https://developer.idanalyzer.com/docs/docupass-identity-verification
-    contact:
-      - FN: ID Analyzer Support
-        url: https://www.idanalyzer.com/contact-us
-
-  - aid: idanalyzer:transaction-vault-api
-    name: ID Analyzer Transaction Vault API
-    description: >-
-      REST API for storing, retrieving, updating, and exporting identity
-      verification records with audit trails. Supports GDPR-compliant data
-      lifecycle management including file attachments and transaction exports.
-    humanURL: https://developer.idanalyzer.com
-    baseURL: https://api2.idanalyzer.com
-    tags:
-      - Vault
-      - Transaction Records
-      - Audit Trail
-      - GDPR
-    properties:
-      - type: Documentation
-        url: https://developer.idanalyzer.com
-    contact:
-      - FN: ID Analyzer Support
-        url: https://www.idanalyzer.com/contact-us
-
+- aid: idanalyzer:biometric-api
+  name: ID Analyzer Biometric API
+  description: >-
+    REST API for 1:1 face matching between an identity document photo and a live selfie or uploaded image.
+    Includes passive liveness detection to prevent spoofing with photos, videos, or masks, and deepfake
+    detection capabilities.
+  humanURL: https://developer.idanalyzer.com
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Biometrics
+  - Face Matching
+  - Liveness Detection
+  - Deepfake Detection
+  properties:
+  - type: Documentation
+    url: https://developer.idanalyzer.com
+  contact:
+  - FN: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+- aid: idanalyzer:aml-api
+  name: ID Analyzer AML Screening API
+  description: >-
+    REST API for Anti-Money Laundering (AML) and Politically Exposed Persons (PEP) screening. Searches
+    global sanctions lists, watchlists, and PEP databases to support regulatory compliance obligations.
+  humanURL: https://developer.idanalyzer.com
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - AML
+  - PEP
+  - Sanctions Screening
+  - Compliance
+  properties:
+  - type: Documentation
+    url: https://developer.idanalyzer.com
+  contact:
+  - FN: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+- aid: idanalyzer:docupass-api
+  name: ID Analyzer DocuPass API
+  description: >-
+    Hosted drop-in KYC verification flow with embedded pages and QR code support. Enables businesses to
+    launch a fully branded identity verification experience without building a front-end, with webhook
+    callbacks on completion.
+  humanURL: https://developer.idanalyzer.com/docs/docupass-identity-verification
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - KYC
+  - Hosted Verification
+  - DocuPass
+  - Onboarding
+  properties:
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/docupass-identity-verification
+  contact:
+  - FN: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+- aid: idanalyzer:transaction-vault-api
+  name: ID Analyzer Transaction Vault API
+  description: >-
+    REST API for storing, retrieving, updating, and exporting identity verification records with audit
+    trails. Supports GDPR-compliant data lifecycle management including file attachments and transaction
+    exports.
+  humanURL: https://developer.idanalyzer.com
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Vault
+  - Transaction Records
+  - Audit Trail
+  - GDPR
+  properties:
+  - type: Documentation
+    url: https://developer.idanalyzer.com
+  contact:
+  - FN: ID Analyzer Support
+    url: https://www.idanalyzer.com/contact-us
+- aid: idanalyzer:idanalyzer-account-api
+  name: ID Analyzer Account API
+  description: Account profile and usage
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-account-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-aml-api
+  name: ID Analyzer AML API
+  description: Anti-Money Laundering and sanctions screening
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - AML
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-aml-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-biometric-api
+  name: ID Analyzer Biometric API
+  description: Face matching and liveness detection
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Biometric
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-biometric-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-contract-api
+  name: ID Analyzer Contract API
+  description: Contract template management and document generation
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Contract
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-contract-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-docupass-api
+  name: ID Analyzer Docupass API
+  description: Hosted KYC verification sessions
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Docupass
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-docupass-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-profile-api
+  name: ID Analyzer Profile API
+  description: KYC profile management
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Profile
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-profile-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-scanner-api
+  name: ID Analyzer Scanner API
+  description: Document scanning and OCR operations
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Scanner
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-scanner-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-transaction-api
+  name: ID Analyzer Transaction API
+  description: Transaction record management and export
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Transaction
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-transaction-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
+- aid: idanalyzer:idanalyzer-webhook-api
+  name: ID Analyzer Webhook API
+  description: Webhook delivery log management
+  humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
+  baseURL: https://api2.idanalyzer.com
+  tags:
+  - Webhook
+  properties:
+  - type: OpenAPI
+    url: openapi/idanalyzer-webhook-api-openapi.yml
+  - type: Documentation
+    url: https://developer.idanalyzer.com/docs/about-id-analyzer
 common:
   - type: AgenticAccess
     url: agentic-access/idanalyzer-agentic-access.yml
