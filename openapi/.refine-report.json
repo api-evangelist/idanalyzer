@@ -1,0 +1,30 @@
+{
+  "provider": "idanalyzer",
+  "sources": [
+    "idanalyzer-account-api-openapi.yml",
+    "idanalyzer-aml-api-openapi.yml",
+    "idanalyzer-biometric-api-openapi.yml",
+    "idanalyzer-contract-api-openapi.yml",
+    "idanalyzer-docupass-api-openapi.yml",
+    "idanalyzer-profile-api-openapi.yml",
+    "idanalyzer-scanner-api-openapi.yml",
+    "idanalyzer-transaction-api-openapi.yml",
+    "idanalyzer-webhook-api-openapi.yml"
+  ],
+  "outputs": [
+    "idanalyzer-account-api-openapi.yml",
+    "idanalyzer-aml-api-openapi.yml",
+    "idanalyzer-biometric-api-openapi.yml",
+    "idanalyzer-contract-api-openapi.yml",
+    "idanalyzer-docupass-api-openapi.yml",
+    "idanalyzer-profile-api-openapi.yml",
+    "idanalyzer-scanner-api-openapi.yml",
+    "idanalyzer-transaction-api-openapi.yml",
+    "idanalyzer-webhook-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
