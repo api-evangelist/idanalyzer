@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account Contract API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contract",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate contract document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/generate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a contract document using a template and optionally populate it with data from a transaction. Supports PDF, DOCX, and HTML output formats."
+        },
+        {
+          "info": {
+            "name": "List contract templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/contract",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by newest (-1) or oldest (1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per call (1-99)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Start the list from this entry index"
+              },
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "query",
+                "description": "Filter result by template ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of contract templates."
+        },
+        {
+          "info": {
+            "name": "Create contract template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/contract",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new contract template with HTML content."
+        },
+        {
+          "info": {
+            "name": "Get contract template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/contract/:templateId",
+            "params": [
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "Template ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a single contract template by ID."
+        },
+        {
+          "info": {
+            "name": "Update contract template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/contract/:templateId",
+            "params": [
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "Template ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contract template."
+        },
+        {
+          "info": {
+            "name": "Delete contract template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api2.idanalyzer.com/contract/:templateId",
+            "params": [
+              {
+                "name": "templateId",
+                "value": "",
+                "type": "path",
+                "description": "Template ID"
+              }
+            ]
+          },
+          "docs": "Delete a contract template by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

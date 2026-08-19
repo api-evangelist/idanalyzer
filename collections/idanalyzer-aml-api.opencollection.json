@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account AML API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AML",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "AML/PEP sanctions screening (v1)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/aml",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search the AML database with a person's name or document number. Searches global sanctions lists, watchlists, and PEP databases to support regulatory compliance obligations."
+        },
+        {
+          "info": {
+            "name": "AML/PEP sanctions screening (v3)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/amlv3",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search the AML database using the v3 endpoint with full-text query or entity IDs. Supports paginated results."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

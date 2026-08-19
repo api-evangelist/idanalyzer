@@ -1,0 +1,1100 @@
+{
+  "item": [
+    {
+      "id": "d7cdea4d-ab23-4117-82cc-fefabe0cf321",
+      "name": "Profile",
+      "description": {
+        "content": "KYC profile management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "451a7876-9e8f-4c54-93b8-de60c8880e77",
+          "name": "List KYC profiles",
+          "request": {
+            "name": "List KYC profiles",
+            "description": {
+              "content": "Retrieve a paginated list of KYC profiles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "profile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "-1",
+                  "description": "Sort results by newest (-1) or oldest (1)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of items to return per call (1-99)"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Start the list from this entry index"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "93348fae-df78-422d-898e-32d310ad8ced",
+              "name": "List of KYC profiles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "-1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"profileId\": \"string\",\n      \"name\": \"string\",\n      \"config\": {\n        \"key_0\": true,\n        \"key_1\": 46\n      },\n      \"createdAt\": \"1977-08-18T10:35:01.755Z\",\n      \"updatedAt\": \"1950-03-19T21:32:47.250Z\"\n    },\n    {\n      \"profileId\": \"string\",\n      \"name\": \"string\",\n      \"config\": {\n        \"key_0\": 9753,\n        \"key_1\": \"string\"\n      },\n      \"createdAt\": \"2022-11-12T20:00:57.377Z\",\n      \"updatedAt\": \"2014-11-16T20:59:56.374Z\"\n    }\n  ],\n  \"total\": 1042\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e76ccd5-8c60-4bd0-8b72-ef201d690e25",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "-1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93c13df1-bc53-4f40-8dc4-2c5c34f5a5b2",
+          "name": "Create KYC profile",
+          "request": {
+            "name": "Create KYC profile",
+            "description": {
+              "content": "Create a new KYC profile with the specified configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "profile"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9b2d3eb1-095e-44f9-813d-261b0017fbf2",
+              "name": "Created KYC profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"profileId\": \"string\",\n  \"name\": \"string\",\n  \"config\": {\n    \"key_0\": 3993\n  },\n  \"createdAt\": \"1974-08-02T22:20:36.527Z\",\n  \"updatedAt\": \"1974-01-30T07:26:06.507Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb5f7878-3a08-4925-91dd-fd66a9412bad",
+              "name": "Bad request - invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b19e80d-9445-4230-8b09-2cba55f83024",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1d9d04aa-1051-4431-bd58-a0789a8001b9",
+          "name": "Get KYC profile",
+          "request": {
+            "name": "Get KYC profile",
+            "description": {
+              "content": "Retrieve a single KYC profile by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "profile",
+                ":profileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) KYC Profile ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5f7cb38d-208c-4f5e-a490-a9ce23c148fc",
+              "name": "KYC profile details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"profileId\": \"string\",\n  \"name\": \"string\",\n  \"config\": {\n    \"key_0\": 3993\n  },\n  \"createdAt\": \"1974-08-02T22:20:36.527Z\",\n  \"updatedAt\": \"1974-01-30T07:26:06.507Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d87db97-cc64-4b29-a8d8-6113912b5697",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed506379-0cc6-44f3-9f66-32156e14e56a",
+          "name": "Update KYC profile",
+          "request": {
+            "name": "Update KYC profile",
+            "description": {
+              "content": "Update an existing KYC profile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "profile",
+                ":profileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) KYC Profile ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a0091ef4-2ef1-489d-a884-4d35d488a12a",
+              "name": "Updated KYC profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"profileId\": \"string\",\n  \"name\": \"string\",\n  \"config\": {\n    \"key_0\": 3993\n  },\n  \"createdAt\": \"1974-08-02T22:20:36.527Z\",\n  \"updatedAt\": \"1974-01-30T07:26:06.507Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4cceb81f-1774-4979-9a30-4d6bbb6e4417",
+              "name": "Bad request - invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f947d26-e45a-47fc-9e46-b4afc691d9dc",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"canvasSize\": \"<integer>\",\n  \"orientationCorrection\": \"<boolean>\",\n  \"objectDetection\": \"<boolean>\",\n  \"AAMVABarcodeParsing\": \"<boolean>\",\n  \"saveResult\": \"<boolean>\",\n  \"saveImage\": \"<boolean>\",\n  \"outputImage\": \"<boolean>\",\n  \"outputType\": \"url\",\n  \"outputSize\": \"<integer>\",\n  \"crop\": \"<boolean>\",\n  \"advancedCrop\": \"<boolean>\",\n  \"inferFullName\": \"<boolean>\",\n  \"splitFirstName\": \"<boolean>\",\n  \"transactionAuditReport\": \"<boolean>\",\n  \"timezone\": \"UTC\",\n  \"obscure\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"webhook\": \"<uri>\",\n  \"thresholds\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\"\n  },\n  \"decisionTrigger\": {\n    \"review\": \"<number>\",\n    \"reject\": \"<number>\"\n  },\n  \"decisions\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\",\n      \"review\": \"<number>\",\n      \"reject\": \"<number>\",\n      \"weight\": \"<number>\"\n    }\n  },\n  \"acceptedDocuments\": {\n    \"documentCountry\": \"<string>\",\n    \"documentState\": \"<string>\",\n    \"documentType\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "faf9208a-626a-48db-a130-b9e8b16db6db",
+          "name": "Delete KYC profile",
+          "request": {
+            "name": "Delete KYC profile",
+            "description": {
+              "content": "Delete a KYC profile by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "profile",
+                ":profileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) KYC Profile ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d7f2e41-41ba-4153-95ae-2583fd180777",
+              "name": "Profile deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73e3212c-3967-40ab-a1b9-454f6045b4f6",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb8881cd-dd01-4098-98b3-c71c42e53e60",
+          "name": "Export KYC profile",
+          "request": {
+            "name": "Export KYC profile",
+            "description": {
+              "content": "Export a KYC profile configuration by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "export",
+                "profile",
+                ":profileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "profileId",
+                  "description": "(Required) KYC Profile ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b3ebab19-3340-4f83-a1df-f3260db066cd",
+              "name": "Exported KYC profile configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "export",
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"profileId\": \"string\",\n  \"name\": \"string\",\n  \"config\": {\n    \"key_0\": 3993\n  },\n  \"createdAt\": \"1974-08-02T22:20:36.527Z\",\n  \"updatedAt\": \"1974-01-30T07:26:06.507Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1ccaa9d-0904-43c7-88c5-dd554bcdb574",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "export",
+                    "profile",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "profileId",
+                      "description": "(Required) KYC Profile ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 4169,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api2.idanalyzer.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Api-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a5e9ff12-0ba3-4070-be88-00c00542a65b",
+    "name": "ID Analyzer Scanner Account Profile API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.\n\nContact Support:\n Name: ID Analyzer Support\n Email: support@idanalyzer.com",
+      "type": "text/plain"
+    }
+  }
+}

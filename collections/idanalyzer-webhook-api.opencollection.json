@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account Webhook API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhook",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List webhook delivery logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/webhook",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by newest (-1) or oldest (1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per call (1-99)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Start the list from this entry index"
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query",
+                "description": "Filter by event type"
+              },
+              {
+                "name": "success",
+                "value": "",
+                "type": "query",
+                "description": "Filter by delivery success (1=success, 0=failure)"
+              },
+              {
+                "name": "createdAtMin",
+                "value": "",
+                "type": "query",
+                "description": "Filter deliveries created after this timestamp"
+              },
+              {
+                "name": "createdAtMax",
+                "value": "",
+                "type": "query",
+                "description": "Filter deliveries created before this timestamp"
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of webhook delivery logs with optional filtering by event type, success status, and date range."
+        },
+        {
+          "info": {
+            "name": "Resend webhook delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/webhook/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "Webhook delivery ID"
+              }
+            ]
+          },
+          "docs": "Resend a webhook delivery by ID."
+        },
+        {
+          "info": {
+            "name": "Delete webhook delivery log",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api2.idanalyzer.com/webhook/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "Webhook delivery ID"
+              }
+            ]
+          },
+          "docs": "Delete a webhook delivery log by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

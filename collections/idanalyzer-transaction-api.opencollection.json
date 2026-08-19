@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account Transaction API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transaction",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/transaction",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by newest (-1) or oldest (1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per call (1-99)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Start the list from this entry index"
+              },
+              {
+                "name": "createdAtMin",
+                "value": "",
+                "type": "query",
+                "description": "List transactions created after this UNIX timestamp"
+              },
+              {
+                "name": "createdAtMax",
+                "value": "",
+                "type": "query",
+                "description": "List transactions created before this UNIX timestamp"
+              },
+              {
+                "name": "customData",
+                "value": "",
+                "type": "query",
+                "description": "Filter by customData field"
+              },
+              {
+                "name": "decision",
+                "value": "",
+                "type": "query",
+                "description": "Filter by decision"
+              },
+              {
+                "name": "docupass",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Docupass reference"
+              },
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by KYC Profile ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of identity verification transaction history with optional filtering by date range, decision, Docupass reference, custom data, and profile ID."
+        },
+        {
+          "info": {
+            "name": "Get transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/transaction/:transactionId",
+            "params": [
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path",
+                "description": "Transaction ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a single identity verification transaction record by ID."
+        },
+        {
+          "info": {
+            "name": "Update transaction decision",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api2.idanalyzer.com/transaction/:transactionId",
+            "params": [
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path",
+                "description": "Transaction ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the decision on a transaction record. The updated decision will be relayed to the configured webhook."
+        },
+        {
+          "info": {
+            "name": "Delete transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api2.idanalyzer.com/transaction/:transactionId",
+            "params": [
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path",
+                "description": "Transaction ID"
+              }
+            ]
+          },
+          "docs": "Delete a transaction record by ID."
+        },
+        {
+          "info": {
+            "name": "Download transaction image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/imagevault/:imageToken",
+            "params": [
+              {
+                "name": "imageToken",
+                "value": "",
+                "type": "path",
+                "description": "Image token from transaction API response"
+              }
+            ]
+          },
+          "docs": "Download a transaction image using the image token from the transaction response."
+        },
+        {
+          "info": {
+            "name": "Download transaction file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/filevault/:fileName",
+            "params": [
+              {
+                "name": "fileName",
+                "value": "",
+                "type": "path",
+                "description": "Secured file name from transaction response"
+              }
+            ]
+          },
+          "docs": "Download a transaction file (e.g. PDF audit report) using the secured file name."
+        },
+        {
+          "info": {
+            "name": "Export transaction archive",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/export/transaction",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Export transaction records as a CSV or JSON archive file. Supports filtering by date range, decision, Docupass reference, custom data, and profile ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

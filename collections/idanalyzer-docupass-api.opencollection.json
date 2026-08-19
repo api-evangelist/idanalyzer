@@ -1,0 +1,110 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account Docupass API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Docupass",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Docupass sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/docupass",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by newest (-1) or oldest (1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per call (1-99)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Start the list from this entry index"
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of Docupass verification sessions."
+        },
+        {
+          "info": {
+            "name": "Create Docupass session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/docupass",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new hosted Docupass identity verification session. Returns a URL that can be shared with the end user to complete their identity verification online or via QR code."
+        },
+        {
+          "info": {
+            "name": "Get Docupass session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/docupass/:reference",
+            "params": [
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path",
+                "description": "Docupass reference ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a single Docupass session by reference ID."
+        },
+        {
+          "info": {
+            "name": "Delete Docupass session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api2.idanalyzer.com/docupass/:reference",
+            "params": [
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path",
+                "description": "Docupass reference ID"
+              }
+            ]
+          },
+          "docs": "Delete a Docupass session by reference ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

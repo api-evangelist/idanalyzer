@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Account Scanner API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scanner",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Full KYC document scan",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/scan",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a new identity document scan and ID face verification transaction by providing input images. Performs OCR extraction, anti-forgery analysis, biometric face match, and produces a KYC decision (accept/review/reject). Requires a KYC profile to be specified."
+        },
+        {
+          "info": {
+            "name": "Quick OCR document scan",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/quickscan",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a quick identity document OCR scan by providing input images. Returns extracted document data without full fraud analysis. Optionally caches images for 24 hours for subsequent full scans."
+        },
+        {
+          "info": {
+            "name": "Very quick OCR document scan",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/veryquickscan",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a very quick (fast) identity document OCR scan. Faster but less thorough than quickScan, useful for high-throughput OCR-only use cases. Optionally caches images for 24 hours."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

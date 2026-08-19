@@ -1,0 +1,451 @@
+{
+  "item": [
+    {
+      "id": "bc5b660c-ac42-45ad-8712-9359c06ecf41",
+      "name": "Biometric",
+      "description": {
+        "content": "Face matching and liveness detection",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "60d1d791-44a5-48ca-b50c-7dbf676336b5",
+          "name": "1:1 face verification",
+          "request": {
+            "name": "1:1 face verification",
+            "description": {
+              "content": "Perform 1:1 face verification using a selfie photo or video against a reference face image (e.g. the photo on an ID document). Includes passive liveness detection to prevent spoofing attacks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "face"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reference\": \"<string>\",\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": 7440,\n    \"key_1\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "88a2863e-fe39-48e5-be4b-08ea86e8adb9",
+              "name": "Face verification result with match score and liveness status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "face"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reference\": \"<string>\",\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"decision\": \"review\",\n  \"transactionId\": \"string\",\n  \"confidence\": 1980.1984204367452,\n  \"liveness\": {\n    \"decision\": \"string\",\n    \"confidence\": 7294.781441833915\n  },\n  \"error\": {\n    \"code\": 2658,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc7ae60a-461b-47b8-b2d3-574bbbfb1a7f",
+              "name": "Bad request - invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "face"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reference\": \"<string>\",\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 7671,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fd240a7-d0d0-4a70-89a9-87430167dbc4",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "face"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reference\": \"<string>\",\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 7671,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0e1d9cfb-abd2-4d12-bb20-b97fdf41e657",
+          "name": "Standalone liveness check",
+          "request": {
+            "name": "Standalone liveness check",
+            "description": {
+              "content": "Perform a standalone liveness check on a selfie photo or video without comparing to a reference image. Detects presentation attacks including photos, videos, masks, and deepfakes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "liveness"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "84125f34-b7c2-47db-bd73-8da461fc721a",
+              "name": "Liveness check result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "liveness"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"decision\": \"review\",\n  \"transactionId\": \"string\",\n  \"confidence\": 1980.1984204367452,\n  \"liveness\": {\n    \"decision\": \"string\",\n    \"confidence\": 7294.781441833915\n  },\n  \"error\": {\n    \"code\": 2658,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a048202-4d1d-40f6-84d7-c6304304a368",
+              "name": "Bad request - invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "liveness"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 7671,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aac36cd6-06d6-4169-b473-b69ed78e6969",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "liveness"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": \"<string>\",\n  \"face\": \"<string>\",\n  \"faceVideo\": \"<string>\",\n  \"profileOverride\": {\n    \"key_0\": \"string\"\n  },\n  \"customData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 7671,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api2.idanalyzer.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Api-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d96a365c-1f6c-46f8-9ed0-7f0255426275",
+    "name": "ID Analyzer Scanner Account Biometric API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.\n\nContact Support:\n Name: ID Analyzer Support\n Email: support@idanalyzer.com",
+      "type": "text/plain"
+    }
+  }
+}

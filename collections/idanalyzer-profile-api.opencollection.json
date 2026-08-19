@@ -1,0 +1,152 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account Profile API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Profile",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List KYC profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/profile",
+            "params": [
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort results by newest (-1) or oldest (1)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per call (1-99)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Start the list from this entry index"
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of KYC profiles."
+        },
+        {
+          "info": {
+            "name": "Create KYC profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/profile",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new KYC profile with the specified configuration."
+        },
+        {
+          "info": {
+            "name": "Get KYC profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/profile/:profileId",
+            "params": [
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "KYC Profile ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a single KYC profile by ID."
+        },
+        {
+          "info": {
+            "name": "Update KYC profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api2.idanalyzer.com/profile/:profileId",
+            "params": [
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "KYC Profile ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing KYC profile."
+        },
+        {
+          "info": {
+            "name": "Delete KYC profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api2.idanalyzer.com/profile/:profileId",
+            "params": [
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "KYC Profile ID"
+              }
+            ]
+          },
+          "docs": "Delete a KYC profile by ID."
+        },
+        {
+          "info": {
+            "name": "Export KYC profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api2.idanalyzer.com/export/profile/:profileId",
+            "params": [
+              {
+                "name": "profileId",
+                "value": "",
+                "type": "path",
+                "description": "KYC Profile ID"
+              }
+            ]
+          },
+          "docs": "Export a KYC profile configuration by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

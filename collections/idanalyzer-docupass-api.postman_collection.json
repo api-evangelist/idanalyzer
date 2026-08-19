@@ -1,0 +1,712 @@
+{
+  "item": [
+    {
+      "id": "45e2d316-d3b4-4f71-b09a-e07253d3ef98",
+      "name": "Docupass",
+      "description": {
+        "content": "Hosted KYC verification sessions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b4b3d164-3d68-4755-bbd0-183f55aeaee7",
+          "name": "List Docupass sessions",
+          "request": {
+            "name": "List Docupass sessions",
+            "description": {
+              "content": "Retrieve a paginated list of Docupass verification sessions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "docupass"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "-1",
+                  "description": "Sort results by newest (-1) or oldest (1)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of items to return per call (1-99)"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Start the list from this entry index"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3d4ec103-89e9-4a21-bd22-0147fbbb099a",
+              "name": "List of Docupass sessions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "-1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"reference\": \"string\",\n      \"url\": \"https://neVGBnAHWlGvhPVIzqvFKsviTJw.wwspyfZKtSPm3LeINmtxTabVUH,I76eWt+CZIKM4k-FvP\",\n      \"qrCode\": \"string\",\n      \"mode\": 8303,\n      \"profile\": \"string\",\n      \"reusable\": false,\n      \"createdAt\": \"1949-01-31T23:47:31.858Z\",\n      \"error\": {\n        \"code\": 2089,\n        \"message\": \"string\"\n      }\n    },\n    {\n      \"reference\": \"string\",\n      \"url\": \"http://iChneWqRrzXzUqpmsNwTfiiXgZqxrQvK.dlxbOfu+\",\n      \"qrCode\": \"string\",\n      \"mode\": 498,\n      \"profile\": \"string\",\n      \"reusable\": true,\n      \"createdAt\": \"1954-11-26T00:39:12.316Z\",\n      \"error\": {\n        \"code\": 5315,\n        \"message\": \"string\"\n      }\n    }\n  ],\n  \"total\": 7087\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7669cedf-793a-464c-b8ea-cabe4126456e",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "order",
+                      "value": "-1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 464,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2affc947-4ab9-46a4-970e-b2a43c622015",
+          "name": "Create Docupass session",
+          "request": {
+            "name": "Create Docupass session",
+            "description": {
+              "content": "Create a new hosted Docupass identity verification session. Returns a URL that can be shared with the end user to complete their identity verification online or via QR code.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "docupass"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profile\": \"<string>\",\n  \"mode\": 0,\n  \"contractFormat\": \"pdf\",\n  \"contractGenerate\": \"<string>\",\n  \"reusable\": false,\n  \"contractPrefill\": \"<string>\",\n  \"contractSign\": \"<string>\",\n  \"customData\": \"<string>\",\n  \"language\": \"<string>\",\n  \"referenceDocument\": \"<string>\",\n  \"referenceDocumentBack\": \"<string>\",\n  \"referenceFace\": \"<string>\",\n  \"userPhone\": \"<string>\",\n  \"verifyAddress\": \"<string>\",\n  \"verifyAge\": \"<string>\",\n  \"verifyDOB\": \"<string>\",\n  \"verifyDocumentNumber\": \"<string>\",\n  \"verifyName\": \"<string>\",\n  \"verifyPostcode\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da06cb49-8d0d-46cd-b889-f59cd0aa66a9",
+              "name": "Created Docupass session with verification URL",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": \"<string>\",\n  \"mode\": 0,\n  \"contractFormat\": \"pdf\",\n  \"contractGenerate\": \"<string>\",\n  \"reusable\": false,\n  \"contractPrefill\": \"<string>\",\n  \"contractSign\": \"<string>\",\n  \"customData\": \"<string>\",\n  \"language\": \"<string>\",\n  \"referenceDocument\": \"<string>\",\n  \"referenceDocumentBack\": \"<string>\",\n  \"referenceFace\": \"<string>\",\n  \"userPhone\": \"<string>\",\n  \"verifyAddress\": \"<string>\",\n  \"verifyAge\": \"<string>\",\n  \"verifyDOB\": \"<string>\",\n  \"verifyDocumentNumber\": \"<string>\",\n  \"verifyName\": \"<string>\",\n  \"verifyPostcode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reference\": \"string\",\n  \"url\": \"http://ozSShFvKSWEaRWNxWhIgSs.lhowA,JLby7bilKIhyPAoRyCTimBot+EnZ,Qp-7KyRj\",\n  \"qrCode\": \"string\",\n  \"mode\": 5342,\n  \"profile\": \"string\",\n  \"reusable\": true,\n  \"createdAt\": \"2017-12-22T08:22:25.184Z\",\n  \"error\": {\n    \"code\": 1845,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1e27cfb-8101-4977-95b5-5496df8d064d",
+              "name": "Bad request - invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": \"<string>\",\n  \"mode\": 0,\n  \"contractFormat\": \"pdf\",\n  \"contractGenerate\": \"<string>\",\n  \"reusable\": false,\n  \"contractPrefill\": \"<string>\",\n  \"contractSign\": \"<string>\",\n  \"customData\": \"<string>\",\n  \"language\": \"<string>\",\n  \"referenceDocument\": \"<string>\",\n  \"referenceDocumentBack\": \"<string>\",\n  \"referenceFace\": \"<string>\",\n  \"userPhone\": \"<string>\",\n  \"verifyAddress\": \"<string>\",\n  \"verifyAge\": \"<string>\",\n  \"verifyDOB\": \"<string>\",\n  \"verifyDocumentNumber\": \"<string>\",\n  \"verifyName\": \"<string>\",\n  \"verifyPostcode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 464,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d344e24-3bfb-4683-8860-b4e670abc32b",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"profile\": \"<string>\",\n  \"mode\": 0,\n  \"contractFormat\": \"pdf\",\n  \"contractGenerate\": \"<string>\",\n  \"reusable\": false,\n  \"contractPrefill\": \"<string>\",\n  \"contractSign\": \"<string>\",\n  \"customData\": \"<string>\",\n  \"language\": \"<string>\",\n  \"referenceDocument\": \"<string>\",\n  \"referenceDocumentBack\": \"<string>\",\n  \"referenceFace\": \"<string>\",\n  \"userPhone\": \"<string>\",\n  \"verifyAddress\": \"<string>\",\n  \"verifyAge\": \"<string>\",\n  \"verifyDOB\": \"<string>\",\n  \"verifyDocumentNumber\": \"<string>\",\n  \"verifyName\": \"<string>\",\n  \"verifyPostcode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 464,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e35af328-fff9-41a3-8381-5ec84b65e376",
+          "name": "Get Docupass session",
+          "request": {
+            "name": "Get Docupass session",
+            "description": {
+              "content": "Retrieve a single Docupass session by reference ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "docupass",
+                ":reference"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "reference",
+                  "description": "(Required) Docupass reference ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bedc6c9f-1f49-421d-b409-41af9b8d7bbc",
+              "name": "Docupass session details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) Docupass reference ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reference\": \"string\",\n  \"url\": \"http://ozSShFvKSWEaRWNxWhIgSs.lhowA,JLby7bilKIhyPAoRyCTimBot+EnZ,Qp-7KyRj\",\n  \"qrCode\": \"string\",\n  \"mode\": 5342,\n  \"profile\": \"string\",\n  \"reusable\": true,\n  \"createdAt\": \"2017-12-22T08:22:25.184Z\",\n  \"error\": {\n    \"code\": 1845,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ecdbe0a-19e9-435b-84ab-6e8282e31b7c",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) Docupass reference ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 464,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fa2708b6-a23b-4667-b302-eb9f988add10",
+          "name": "Delete Docupass session",
+          "request": {
+            "name": "Delete Docupass session",
+            "description": {
+              "content": "Delete a Docupass session by reference ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "docupass",
+                ":reference"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "reference",
+                  "description": "(Required) Docupass reference ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "08270ad6-a5ce-4ae3-8c90-41a985d8ce67",
+              "name": "Docupass session deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) Docupass reference ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "afe4152a-c54f-44fb-a4dc-203aeebf4292",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docupass",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) Docupass reference ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 464,\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api2.idanalyzer.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Api-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "15de36fd-917f-45be-973b-c6c8e8c412e5",
+    "name": "ID Analyzer Scanner Account Docupass API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.\n\nContact Support:\n Name: ID Analyzer Support\n Email: support@idanalyzer.com",
+      "type": "text/plain"
+    }
+  }
+}

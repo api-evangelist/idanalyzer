@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ID Analyzer Scanner Account Biometric API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Biometric",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "1:1 face verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/face",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform 1:1 face verification using a selfie photo or video against a reference face image (e.g. the photo on an ID document). Includes passive liveness detection to prevent spoofing attacks."
+        },
+        {
+          "info": {
+            "name": "Standalone liveness check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api2.idanalyzer.com/liveness",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a standalone liveness check on a selfie photo or video without comparing to a reference image. Detects presentation attacks including photos, videos, masks, and deepfakes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
