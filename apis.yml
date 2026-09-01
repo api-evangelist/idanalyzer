@@ -182,7 +182,7 @@ apis:
   humanURL: https://developer.idanalyzer.com/docs/about-id-analyzer
   baseURL: https://api2.idanalyzer.com
   tags:
-  - Docupass
+  - DocuPass
   tags_raw:
   - Docupass
   properties:
