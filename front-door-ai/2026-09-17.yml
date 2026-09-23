@@ -1,0 +1,25 @@
+# Front Door AI Index — idanalyzer — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: idanalyzer
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.idanalyzer.com
+  final_host: www.idanalyzer.com
+  ownership: own
+  owner: idanalyzer
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 1
+  host_score: 1
+  density: 0.61
+  words: 1639
+  tiers:
+    agentic: 0
+    core: 1
+    model: 0
+  ambiguous: 0
+  top_terms:
+    ML: 1

@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: ID Analyzer Scanner Account Profile API
   description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
@@ -164,33 +164,35 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   schemas:
-    ProfileResponse:
-      type: object
-      properties:
-        profileId:
-          type: string
-          description: KYC Profile ID
-        name:
-          type: string
-          description: Profile name
-        config:
-          type: object
-          description: Profile configuration
-          additionalProperties: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
     ProfileRequest:
       type: object
       properties:
@@ -305,6 +307,11 @@ components:
             $ref: '#/components/schemas/ProfileResponse'
         total:
           type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     ErrorObject:
       type: object
       properties:
@@ -314,11 +321,32 @@ components:
         message:
           type: string
           description: Human-readable error message
-    ErrorResponse:
+    ProfileResponse:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
+        profileId:
+          type: string
+          description: KYC Profile ID
+        name:
+          type: string
+          description: Profile name
+        config:
+          type: object
+          description: Profile configuration
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
   responses:
     BadRequest:
       description: Bad request - invalid parameters
@@ -338,34 +366,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

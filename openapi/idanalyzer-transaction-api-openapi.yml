@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: ID Analyzer Scanner Account Transaction API
   description: REST API for scanning and performing OCR on government-issued identity documents including passports, driver licenses, and national ID cards from 190+ countries. Extracts structured data fields, performs anti-forgery analysis with 20+ fraud detection models, and validates MRZ codes, holograms, and watermarks. Supports full KYC scan with biometric face verification, quick OCR scan, and very-quick OCR scan variants.
@@ -236,14 +236,41 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   schemas:
-    SuccessResponse:
+    ExportTransactionResponse:
       type: object
       properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
+        Url:
+          type: string
+          description: Download URL for the exported archive
     ExportTransactionRequest:
       type: object
       properties:
@@ -291,6 +318,20 @@ components:
         profileId:
           type: string
           description: Filter export by KYC Profile ID
+    TransactionListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
+        total:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     ErrorObject:
       type: object
       properties:
@@ -340,26 +381,13 @@ components:
           items:
             type: object
             additionalProperties: true
-    ErrorResponse:
+    SuccessResponse:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    TransactionListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionResponse'
-        total:
-          type: integer
-    ExportTransactionResponse:
-      type: object
-      properties:
-        Url:
-          type: string
-          description: Download URL for the exported archive
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
   responses:
     BadRequest:
       description: Bad request - invalid parameters
@@ -379,34 +407,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
   securitySchemes:
     ApiKeyHeader:
       type: apiKey
