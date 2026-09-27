@@ -111,6 +111,71 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    WebhookListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookDelivery'
+        total:
+          type: integer
+    WebhookDelivery:
+      type: object
+      properties:
+        webhookId:
+          type: string
+          description: Webhook delivery ID
+        event:
+          type: string
+          description: Event type that triggered the webhook
+        url:
+          type: string
+          description: Webhook destination URL
+        success:
+          type: boolean
+          description: Whether the delivery was successful
+        statusCode:
+          type: integer
+          description: HTTP response status code from the webhook endpoint
+        createdAt:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     order:
       name: order
@@ -139,71 +204,6 @@ components:
         minimum: 1
         maximum: 99
         default: 10
-  schemas:
-    WebhookDelivery:
-      type: object
-      properties:
-        webhookId:
-          type: string
-          description: Webhook delivery ID
-        event:
-          type: string
-          description: Event type that triggered the webhook
-        url:
-          type: string
-          description: Webhook destination URL
-        success:
-          type: boolean
-          description: Whether the delivery was successful
-        statusCode:
-          type: integer
-          description: HTTP response status code from the webhook endpoint
-        createdAt:
-          type: string
-          format: date-time
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-    WebhookListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookDelivery'
-        total:
-          type: integer
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
-  responses:
-    Unauthorized:
-      description: Unauthorized - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

@@ -98,82 +98,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    QuickScanResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          description: Extracted document OCR data fields
-          additionalProperties: true
-        reference:
-          type: object
-          description: Cache references for uploaded images (if saveFile=true)
-          properties:
-            document:
-              type: string
-            documentBack:
-              type: string
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-    ScanResponse:
-      type: object
-      properties:
-        decision:
-          type: string
-          enum:
-          - accept
-          - review
-          - reject
-          description: Final KYC decision
-        transactionId:
-          type: string
-          description: Unique transaction identifier
-        data:
-          type: object
-          description: Extracted document data fields
-          additionalProperties: true
-        warning:
-          type: array
-          description: List of validation warnings
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              description:
-                type: string
-              confidence:
-                type: number
-        outputImage:
-          type: string
-          description: Cropped/processed document image (URL or base64)
-        outputImageBack:
-          type: string
-          description: Cropped/processed document back image (URL or base64)
-        faceMatch:
-          type: object
-          description: Face match result (if face image was provided)
-          properties:
-            confidence:
-              type: number
-            decision:
-              type: string
-        error:
-          $ref: '#/components/schemas/ErrorObject'
     ScanRequest:
       type: object
       required:
@@ -253,6 +177,32 @@ components:
         client:
           type: string
           description: Client library identifier (set automatically by SDKs)
+    QuickScanResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Extracted document OCR data fields
+          additionalProperties: true
+        reference:
+          type: object
+          description: Cache references for uploaded images (if saveFile=true)
+          properties:
+            document:
+              type: string
+            documentBack:
+              type: string
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
     QuickScanRequest:
       type: object
       required:
@@ -268,15 +218,65 @@ components:
           type: boolean
           description: Cache uploaded images for 24 hours and return a cache reference
           default: false
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ScanResponse:
+      type: object
+      properties:
+        decision:
+          type: string
+          enum:
+          - accept
+          - review
+          - reject
+          description: Final KYC decision
+        transactionId:
+          type: string
+          description: Unique transaction identifier
+        data:
+          type: object
+          description: Extracted document data fields
+          additionalProperties: true
+        warning:
+          type: array
+          description: List of validation warnings
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              description:
+                type: string
+              confidence:
+                type: number
+        outputImage:
+          type: string
+          description: Cropped/processed document image (URL or base64)
+        outputImageBack:
+          type: string
+          description: Cropped/processed document back image (URL or base64)
+        faceMatch:
+          type: object
+          description: Face match result (if face image was provided)
+          properties:
+            confidence:
+              type: number
+            decision:
+              type: string
+        error:
+          $ref: '#/components/schemas/ErrorObject'
   responses:
-    RateLimited:
-      description: Rate limit exceeded
+    BadRequest:
+      description: Bad request - invalid parameters
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Bad request - invalid parameters
+    RateLimited:
+      description: Rate limit exceeded
       content:
         application/json:
           schema:

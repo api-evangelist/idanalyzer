@@ -49,6 +49,17 @@ tags:
   - Document OCR
   - Biometrics
   - Face Matching
+  - Fraud Prevention
+  - Passport
+  - Driver License
+  - Liveness Detection
+tags_raw:
+  - Identity Verification
+  - KYC
+  - AML
+  - Document OCR
+  - Biometrics
+  - Face Matching
   - Fraud Detection
   - Passport
   - Driver License

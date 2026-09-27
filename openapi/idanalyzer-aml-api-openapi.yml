@@ -71,7 +71,65 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    AMLSearchV3Request:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Full-text query (name, alias, document/passport/tax/registration number, etc.)
+        id:
+          type: string
+          description: One or more AML entity IDs separated by comma or newline (max 50)
+        limit:
+          type: integer
+          description: Number of results per page (0 uses API default)
+          default: 0
+        page:
+          type: integer
+          description: Result page number (0 uses API default)
+          default: 0
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    AMLSearchResponse:
+      type: object
+      properties:
+        hits:
+          type: array
+          description: Matching AML database entries
+          items:
+            type: object
+            additionalProperties: true
+        total:
+          type: integer
+          description: Total number of matching results
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     AMLSearchRequest:
       type: object
       properties:
@@ -103,64 +161,6 @@ components:
         birthYear:
           type: string
           description: Filter by year of birth
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    AMLSearchResponse:
-      type: object
-      properties:
-        hits:
-          type: array
-          description: Matching AML database entries
-          items:
-            type: object
-            additionalProperties: true
-        total:
-          type: integer
-          description: Total number of matching results
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-    AMLSearchV3Request:
-      type: object
-      properties:
-        text:
-          type: string
-          description: Full-text query (name, alias, document/passport/tax/registration number, etc.)
-        id:
-          type: string
-          description: One or more AML entity IDs separated by comma or newline (max 50)
-        limit:
-          type: integer
-          description: Number of results per page (0 uses API default)
-          default: 0
-        page:
-          type: integer
-          description: Result page number (0 uses API default)
-          default: 0
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     ApiKeyHeader:
       type: apiKey
