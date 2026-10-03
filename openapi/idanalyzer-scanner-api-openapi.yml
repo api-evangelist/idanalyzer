@@ -177,21 +177,9 @@ components:
         client:
           type: string
           description: Client library identifier (set automatically by SDKs)
-    QuickScanResponse:
+    ErrorResponse:
       type: object
       properties:
-        data:
-          type: object
-          description: Extracted document OCR data fields
-          additionalProperties: true
-        reference:
-          type: object
-          description: Cache references for uploaded images (if saveFile=true)
-          properties:
-            document:
-              type: string
-            documentBack:
-              type: string
         error:
           $ref: '#/components/schemas/ErrorObject'
     ErrorObject:
@@ -203,26 +191,6 @@ components:
         message:
           type: string
           description: Human-readable error message
-    QuickScanRequest:
-      type: object
-      required:
-      - document
-      properties:
-        document:
-          type: string
-          description: Front of document image (file path, base64, or URL)
-        documentBack:
-          type: string
-          description: Back of document image (file path, base64, or URL)
-        saveFile:
-          type: boolean
-          description: Cache uploaded images for 24 hours and return a cache reference
-          default: false
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
     ScanResponse:
       type: object
       properties:
@@ -265,6 +233,38 @@ components:
             confidence:
               type: number
             decision:
+              type: string
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    QuickScanRequest:
+      type: object
+      required:
+      - document
+      properties:
+        document:
+          type: string
+          description: Front of document image (file path, base64, or URL)
+        documentBack:
+          type: string
+          description: Back of document image (file path, base64, or URL)
+        saveFile:
+          type: boolean
+          description: Cache uploaded images for 24 hours and return a cache reference
+          default: false
+    QuickScanResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Extracted document OCR data fields
+          additionalProperties: true
+        reference:
+          type: object
+          description: Cache references for uploaded images (if saveFile=true)
+          properties:
+            document:
+              type: string
+            documentBack:
               type: string
         error:
           $ref: '#/components/schemas/ErrorObject'

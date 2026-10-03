@@ -71,80 +71,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-    BiometricResponse:
-      type: object
-      properties:
-        decision:
-          type: string
-          enum:
-          - accept
-          - review
-          - reject
-          description: Biometric verification decision
-        transactionId:
-          type: string
-          description: Unique transaction identifier
-        confidence:
-          type: number
-          description: Face match confidence score (0-1)
-        liveness:
-          type: object
-          description: Liveness check result
-          properties:
-            decision:
-              type: string
-            confidence:
-              type: number
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    FaceVerifyRequest:
-      type: object
-      required:
-      - reference
-      - profile
-      properties:
-        reference:
-          type: string
-          description: Reference face image (ID document photo, file path, base64, URL, or cache ref)
-        face:
-          type: string
-          description: Selfie face photo (file path, base64, URL, or cache reference)
-        faceVideo:
-          type: string
-          description: Selfie face video (file path, base64, or URL). Used if face is empty.
-        profile:
-          type: string
-          description: KYC Profile ID or preset profile name
-        profileOverride:
-          type: object
-          description: Per-request overrides applied on top of the specified profile
-          additionalProperties: true
-        customData:
-          type: string
-          description: Arbitrary string to store alongside the transaction
     ErrorResponse:
       type: object
       properties:
@@ -171,6 +98,79 @@ components:
         customData:
           type: string
           description: Arbitrary string to store alongside the transaction
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    FaceVerifyRequest:
+      type: object
+      required:
+      - reference
+      - profile
+      properties:
+        reference:
+          type: string
+          description: Reference face image (ID document photo, file path, base64, URL, or cache ref)
+        face:
+          type: string
+          description: Selfie face photo (file path, base64, URL, or cache reference)
+        faceVideo:
+          type: string
+          description: Selfie face video (file path, base64, or URL). Used if face is empty.
+        profile:
+          type: string
+          description: KYC Profile ID or preset profile name
+        profileOverride:
+          type: object
+          description: Per-request overrides applied on top of the specified profile
+          additionalProperties: true
+        customData:
+          type: string
+          description: Arbitrary string to store alongside the transaction
+    BiometricResponse:
+      type: object
+      properties:
+        decision:
+          type: string
+          enum:
+          - accept
+          - review
+          - reject
+          description: Biometric verification decision
+        transactionId:
+          type: string
+          description: Unique transaction identifier
+        confidence:
+          type: number
+          description: Face match confidence score (0-1)
+        liveness:
+          type: object
+          description: Liveness check result
+          properties:
+            decision:
+              type: string
+            confidence:
+              type: number
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

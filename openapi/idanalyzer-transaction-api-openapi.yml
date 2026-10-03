@@ -236,26 +236,40 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     ErrorObject:
       type: object
       properties:
@@ -265,18 +279,46 @@ components:
         message:
           type: string
           description: Human-readable error message
-    SuccessResponse:
+    TransactionResponse:
       type: object
       properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
+        transactionId:
+          type: string
+          description: Unique transaction identifier
+        decision:
+          type: string
+          enum:
+          - accept
+          - review
+          - reject
+          description: KYC decision
+        data:
+          type: object
+          description: Extracted document data fields
+          additionalProperties: true
+        profile:
+          type: string
+          description: KYC Profile ID used
+        customData:
+          type: string
+          description: Custom data stored with the transaction
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        outputImage:
+          type: string
+          description: Processed document image token or URL
+        outputImageBack:
+          type: string
+          description: Processed document back image token or URL
+        warning:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
     TransactionListResponse:
       type: object
       properties:
@@ -286,12 +328,13 @@ components:
             $ref: '#/components/schemas/TransactionResponse'
         total:
           type: integer
-    ExportTransactionResponse:
+    SuccessResponse:
       type: object
       properties:
-        Url:
-          type: string
-          description: Download URL for the exported archive
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
     ExportTransactionRequest:
       type: object
       properties:
@@ -339,74 +382,31 @@ components:
         profileId:
           type: string
           description: Filter export by KYC Profile ID
-    TransactionResponse:
+    ExportTransactionResponse:
       type: object
       properties:
-        transactionId:
+        Url:
           type: string
-          description: Unique transaction identifier
-        decision:
-          type: string
-          enum:
-          - accept
-          - review
-          - reject
-          description: KYC decision
-        data:
-          type: object
-          description: Extracted document data fields
-          additionalProperties: true
-        profile:
-          type: string
-          description: KYC Profile ID used
-        customData:
-          type: string
-          description: Custom data stored with the transaction
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-        outputImage:
-          type: string
-          description: Processed document image token or URL
-        outputImageBack:
-          type: string
-          description: Processed document back image token or URL
-        warning:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-  parameters:
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
+          description: Download URL for the exported archive
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

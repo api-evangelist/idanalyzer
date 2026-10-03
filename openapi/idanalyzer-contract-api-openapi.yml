@@ -170,7 +170,123 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   schemas:
+    ContractGenerateRequest:
+      type: object
+      required:
+      - templateId
+      properties:
+        templateId:
+          type: string
+          description: Contract template ID
+        format:
+          type: string
+          description: Output format
+          enum:
+          - PDF
+          - DOCX
+          - HTML
+          default: PDF
+        transactionId:
+          type: string
+          description: Fill template with data from this transaction ID
+        fillData:
+          type: object
+          description: Key-value pairs to autofill template dynamic fields
+          additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    TemplateResponse:
+      type: object
+      properties:
+        templateId:
+          type: string
+          description: Template ID
+        name:
+          type: string
+          description: Template name
+        content:
+          type: string
+          description: Template HTML content
+        orientation:
+          type: string
+        timezone:
+          type: string
+        font:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    TemplateListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateResponse'
+        total:
+          type: integer
+    ContractGenerateResponse:
+      type: object
+      properties:
+        document:
+          type: string
+          description: Base64-encoded generated document or download URL
+        format:
+          type: string
+          description: Output format used
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     TemplateCreateRequest:
       type: object
       required:
@@ -199,94 +315,6 @@ components:
           type: string
           description: Template font
           default: Open Sans
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
-    TemplateListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateResponse'
-        total:
-          type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    TemplateResponse:
-      type: object
-      properties:
-        templateId:
-          type: string
-          description: Template ID
-        name:
-          type: string
-          description: Template name
-        content:
-          type: string
-          description: Template HTML content
-        orientation:
-          type: string
-        timezone:
-          type: string
-        font:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    ContractGenerateRequest:
-      type: object
-      required:
-      - templateId
-      properties:
-        templateId:
-          type: string
-          description: Contract template ID
-        format:
-          type: string
-          description: Output format
-          enum:
-          - PDF
-          - DOCX
-          - HTML
-          default: PDF
-        transactionId:
-          type: string
-          description: Fill template with data from this transaction ID
-        fillData:
-          type: object
-          description: Key-value pairs to autofill template dynamic fields
-          additionalProperties: true
-    ContractGenerateResponse:
-      type: object
-      properties:
-        document:
-          type: string
-          description: Base64-encoded generated document or download URL
-        format:
-          type: string
-          description: Output format used
-        error:
-          $ref: '#/components/schemas/ErrorObject'
   responses:
     BadRequest:
       description: Bad request - invalid parameters
@@ -306,34 +334,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

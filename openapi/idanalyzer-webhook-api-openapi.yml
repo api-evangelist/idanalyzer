@@ -111,7 +111,40 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     ErrorObject:
       type: object
       properties:
@@ -121,18 +154,6 @@ components:
         message:
           type: string
           description: Human-readable error message
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
     WebhookListResponse:
       type: object
       properties:
@@ -142,6 +163,13 @@ components:
             $ref: '#/components/schemas/WebhookDelivery'
         total:
           type: integer
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
     WebhookDelivery:
       type: object
       properties:
@@ -176,34 +204,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

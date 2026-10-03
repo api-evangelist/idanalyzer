@@ -71,6 +71,11 @@ components:
         balance:
           type: number
           description: Remaining credit balance
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     ErrorObject:
       type: object
       properties:
@@ -80,11 +85,6 @@ components:
         message:
           type: string
           description: Human-readable error message
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
   responses:
     Unauthorized:
       description: Unauthorized - invalid or missing API key
