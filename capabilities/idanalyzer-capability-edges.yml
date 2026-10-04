@@ -1,0 +1,36 @@
+slug: idanalyzer
+provider: ID Analyzer
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Webhook
+  spec_file: idanalyzer-webhook-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.82
+  evidence: GET /webhook listWebhooks List webhook delivery logs; POST /webhook/{webhookId} resendWebhook
+    Resend webhook delivery; schema WebhookDelivery
+  reason: Operations manage outbound webhook delivery logs and redelivery, which is exactly Webhook &
+    Event Subscription Management (delivery reliability) under Developer Platform & API Ecosystem Management.
+- tag: Contract
+  spec_file: idanalyzer-contract-api-openapi.yml
+  capability_id: BC-150.10
+  capability_id_l1: BC-150
+  capability_name: Contract Management
+  confidence: 0.7
+  evidence: POST /generate generateContract Generate contract document; GET /contract listTemplates List
+    contract templates; POST /contract createTemplate Create contract template
+  reason: These operations manage contract templates and generate contract documents (e-signature/agreement
+    issuance within the onboarding flow), which maps to Contract Management under Legal Management. Confidence
+    moderated because it is a narrow template/document-generation surface rather than full contract lifecycle.

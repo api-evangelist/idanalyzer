@@ -253,6 +253,9 @@ apis:
   - type: Documentation
     url: https://developer.idanalyzer.com/docs/about-id-analyzer
 common:
+  - type: CapabilityMap
+    url: capabilities/idanalyzer-capability-edges.yml
+    name: ID Analyzer Business Capability Map
   - type: AgenticAccess
     url: agentic-access/idanalyzer-agentic-access.yml
   - type: TrustCenter
