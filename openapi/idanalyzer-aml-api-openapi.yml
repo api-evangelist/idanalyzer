@@ -77,29 +77,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/ErrorObject'
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-    AMLSearchResponse:
-      type: object
-      properties:
-        hits:
-          type: array
-          description: Matching AML database entries
-          items:
-            type: object
-            additionalProperties: true
-        total:
-          type: integer
-          description: Total number of matching results
-        error:
-          $ref: '#/components/schemas/ErrorObject'
     AMLSearchRequest:
       type: object
       properties:
@@ -131,6 +108,29 @@ components:
         birthYear:
           type: string
           description: Filter by year of birth
+    AMLSearchResponse:
+      type: object
+      properties:
+        hits:
+          type: array
+          description: Matching AML database entries
+          items:
+            type: object
+            additionalProperties: true
+        total:
+          type: integer
+          description: Total number of matching results
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
     AMLSearchV3Request:
       type: object
       properties:

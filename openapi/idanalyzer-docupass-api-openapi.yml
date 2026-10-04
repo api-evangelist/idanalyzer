@@ -111,35 +111,45 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
   schemas:
+    DocupassResponse:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Docupass session reference ID
+        url:
+          type: string
+          description: Verification URL to share with the end user
+          format: uri
+        qrCode:
+          type: string
+          description: QR code image for the verification URL
+        mode:
+          type: integer
+        profile:
+          type: string
+        reusable:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    DocupassListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocupassResponse'
+        total:
+          type: integer
     DocupassCreateRequest:
       type: object
       required:
@@ -211,11 +221,13 @@ components:
         verifyPostcode:
           type: string
           description: Postcode to verify
-    ErrorResponse:
+    SuccessResponse:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
     ErrorObject:
       type: object
       properties:
@@ -225,47 +237,13 @@ components:
         message:
           type: string
           description: Human-readable error message
-    DocupassListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocupassResponse'
-        total:
-          type: integer
-    DocupassResponse:
-      type: object
-      properties:
-        reference:
-          type: string
-          description: Docupass session reference ID
-        url:
-          type: string
-          description: Verification URL to share with the end user
-          format: uri
-        qrCode:
-          type: string
-          description: QR code image for the verification URL
-        mode:
-          type: integer
-        profile:
-          type: string
-        reusable:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
   responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     BadRequest:
       description: Bad request - invalid parameters
       content:
@@ -278,12 +256,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

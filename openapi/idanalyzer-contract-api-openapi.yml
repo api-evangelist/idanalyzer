@@ -170,63 +170,40 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    offset:
-      name: offset
-      in: query
-      description: Start the list from this entry index
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    limit:
-      name: limit
-      in: query
-      description: Number of items to return per call (1-99)
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 99
-        default: 10
-    order:
-      name: order
-      in: query
-      description: Sort results by newest (-1) or oldest (1)
-      schema:
-        type: integer
-        enum:
-        - -1
-        - 1
-        default: -1
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    ContractGenerateRequest:
-      type: object
-      required:
-      - templateId
-      properties:
-        templateId:
-          type: string
-          description: Contract template ID
-        format:
-          type: string
-          description: Output format
-          enum:
-          - PDF
-          - DOCX
-          - HTML
-          default: PDF
-        transactionId:
-          type: string
-          description: Fill template with data from this transaction ID
-        fillData:
-          type: object
-          description: Key-value pairs to autofill template dynamic fields
-          additionalProperties: true
     ErrorResponse:
       type: object
       properties:
         error:
           $ref: '#/components/schemas/ErrorObject'
+    TemplateListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateResponse'
+        total:
+          type: integer
     ErrorObject:
       type: object
       properties:
@@ -236,13 +213,6 @@ components:
         message:
           type: string
           description: Human-readable error message
-    SuccessResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the operation was successful
-          example: true
     TemplateResponse:
       type: object
       properties:
@@ -267,26 +237,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    TemplateListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateResponse'
-        total:
-          type: integer
-    ContractGenerateResponse:
-      type: object
-      properties:
-        document:
-          type: string
-          description: Base64-encoded generated document or download URL
-        format:
-          type: string
-          description: Output format used
-        error:
-          $ref: '#/components/schemas/ErrorObject'
     TemplateCreateRequest:
       type: object
       required:
@@ -315,25 +265,75 @@ components:
           type: string
           description: Template font
           default: Open Sans
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+    ContractGenerateResponse:
+      type: object
+      properties:
+        document:
+          type: string
+          description: Base64-encoded generated document or download URL
+        format:
+          type: string
+          description: Output format used
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+    ContractGenerateRequest:
+      type: object
+      required:
+      - templateId
+      properties:
+        templateId:
+          type: string
+          description: Contract template ID
+        format:
+          type: string
+          description: Output format
+          enum:
+          - PDF
+          - DOCX
+          - HTML
+          default: PDF
+        transactionId:
+          type: string
+          description: Fill template with data from this transaction ID
+        fillData:
+          type: object
+          description: Key-value pairs to autofill template dynamic fields
+          additionalProperties: true
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: Start the list from this entry index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return per call (1-99)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 99
+        default: 10
+    order:
+      name: order
+      in: query
+      description: Sort results by newest (-1) or oldest (1)
+      schema:
+        type: integer
+        enum:
+        - -1
+        - 1
+        default: -1
   securitySchemes:
     ApiKeyHeader:
       type: apiKey

@@ -72,11 +72,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
     LivenessRequest:
       type: object
       required:
@@ -98,15 +93,11 @@ components:
         customData:
           type: string
           description: Arbitrary string to store alongside the transaction
-    ErrorObject:
+    ErrorResponse:
       type: object
       properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
+        error:
+          $ref: '#/components/schemas/ErrorObject'
     FaceVerifyRequest:
       type: object
       required:
@@ -158,6 +149,15 @@ components:
               type: number
         error:
           $ref: '#/components/schemas/ErrorObject'
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
   responses:
     BadRequest:
       description: Bad request - invalid parameters
